@@ -7,7 +7,8 @@ import Link from "next/link";
 const Layout = ({ children }) => {
   const router = useRouter();
 
-  const { user, setVerCliente, setEditar, setCliente } = useAuth();
+  const { user, setVerCliente, setVerEditar, setCliente, setVerCrear } =
+    useAuth();
 
   useEffect(() => {
     if (Object.values(user).includes("")) {
@@ -39,7 +40,8 @@ const Layout = ({ children }) => {
                 <a
                   onClick={() => {
                     setVerCliente(false);
-                    setEditar(false);
+                    setVerEditar(false);
+                    setVerCrear(false);
                   }}
                   className="text-gray-200 hover:text-white block mt-2 text-2xl font-medium "
                 >
@@ -50,8 +52,9 @@ const Layout = ({ children }) => {
                 <a
                   onClick={() => {
                     setVerCliente(false);
-                    setEditar(false);
-                    setCliente({});
+                    setVerEditar(false);
+                    // setCliente({});
+                    setVerCrear(true);
                   }}
                   className="text-gray-200 hover:text-white block mt-2 text-2xl font-medium "
                 >

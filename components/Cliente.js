@@ -5,7 +5,7 @@ const Cliente = ({ cliente }) => {
   const router = useRouter();
   // console.log(cliente, "CLiente");
   const { nombre, empresa, email, telefono, id } = cliente;
-  const { setVerCliente, setCliente, setEditar } = useAuth();
+  const { setVerCliente, setCliente, setVerEditar } = useAuth();
 
   const handleVer = () => {
     setVerCliente(true);
@@ -13,7 +13,7 @@ const Cliente = ({ cliente }) => {
   };
 
   const handleEdit = () => {
-    setEditar(true);
+    setVerEditar(true);
     setCliente(cliente);
   };
 

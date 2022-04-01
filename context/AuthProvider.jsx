@@ -32,7 +32,8 @@ const AuthProvider = ({ children }) => {
   const [user, setUser] = useState({ id: "", key: "" });
 
   const [verCliente, setVerCliente] = useState(false);
-  const [verEditar, setEditar] = useState(false);
+  const [verEditar, setVerEditar] = useState(false);
+  const [verCrear, setVerCrear] = useState(false);
 
   const [clientes, setClientes] = useState([]);
   const [cliente, setCliente] = useState({});
@@ -52,12 +53,14 @@ const AuthProvider = ({ children }) => {
         setUser,
         clientes,
         setClientes,
+        cliente,
+        setCliente,
         verCliente,
         setVerCliente,
         verEditar,
-        setEditar,
-        cliente,
-        setCliente,
+        setVerEditar,
+        verCrear,
+        setVerCrear,
       }}
     >
       {children}
