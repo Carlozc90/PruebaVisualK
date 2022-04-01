@@ -30,6 +30,7 @@ const AuthProvider = ({ children }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [user, setUser] = useState({ id: "", key: "" });
+  // const [modoEdicion, setModoEdicion] = useState(false);
 
   const [verCliente, setVerCliente] = useState(false);
   const [verEditar, setVerEditar] = useState(false);
@@ -54,6 +55,8 @@ const AuthProvider = ({ children }) => {
         clientes,
         setClientes,
         cliente,
+        // modoEdicion,
+        // setModoEdicion,
         setCliente,
         verCliente,
         setVerCliente,

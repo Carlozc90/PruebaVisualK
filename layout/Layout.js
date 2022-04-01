@@ -53,8 +53,9 @@ const Layout = ({ children }) => {
                   onClick={() => {
                     setVerCliente(false);
                     setVerEditar(false);
-                    // setCliente({});
                     setVerCrear(true);
+                    // limpar el arreglo
+                    setCliente({});
                   }}
                   className="text-gray-200 hover:text-white block mt-2 text-2xl font-medium "
                 >
