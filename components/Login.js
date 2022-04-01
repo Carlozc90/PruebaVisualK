@@ -1,14 +1,29 @@
 import useAuth from "../hooks/useAuth";
+import { useRouter } from "next/router";
 
 const Login = () => {
-  const { email, setEmail, password, setPassword } = useAuth();
+  const { email, setEmail, password, setPassword, setUser } = useAuth();
+  const router = useRouter();
 
-  const handleInicio = (e) => {
+  const handleAuth = (e) => {
     e.preventDefault();
-    console.log(e.target.value);
+
+    if ([email, password].includes("")) {
+      console.log("Todos los Campos son obligatorias");
+      return;
+    }
+
+    // autentificar el usuario
+    setUser({
+      id: "Carlos",
+      keys: "1234abc",
+    });
+
+    router.push("/prime");
   };
+
   return (
-    <>
+    <main className=" bg-slate-300 h-screen mx-auto grid grid-cols-2 gap-12 px-[80px] pb-32 items-center">
       <div className=" ">
         <h1 className="text-orange-400 font-black text-6xl text-center">
           Inicia Sesion y Administra tus{" "}
@@ -16,7 +31,7 @@ const Login = () => {
         </h1>
       </div>
       <div className="mt-20 shadow-lg px-5 py-10 bg-slate-50 rounded-xl">
-        <form onSubmit={handleInicio}>
+        <form onSubmit={handleAuth}>
           <div>
             <label className="uppercase text-gray-500 block text-xl font-bold">
               Email
@@ -51,7 +66,7 @@ const Login = () => {
           </button>
         </form>
       </div>
-    </>
+    </main>
   );
 };
 

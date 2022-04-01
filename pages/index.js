@@ -1,18 +1,12 @@
-import Head from "next/head";
 import Login from "../components/Login";
+import Layout from "../layout/Layout";
 
 export default function Home() {
   return (
     <div>
-      <Head>
-        <title>Create Next App</title>
-        <meta name="description" content="Test Prueba" />
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
-
-      <main className=" bg-slate-300 h-screen mx-auto grid grid-cols-2 gap-12 px-[80px] pb-32 items-center">
+      <Layout>
         <Login />
-      </main>
+      </Layout>
     </div>
   );
 }
