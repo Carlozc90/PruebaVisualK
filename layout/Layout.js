@@ -5,8 +5,9 @@ import Head from "next/head";
 import Link from "next/link";
 
 const Layout = ({ children }) => {
-  const { user, SetVerCliente } = useAuth();
   const router = useRouter();
+
+  const { user, setVerCliente, setEditar, setCliente } = useAuth();
 
   useEffect(() => {
     if (Object.values(user).includes("")) {
@@ -37,15 +38,23 @@ const Layout = ({ children }) => {
               <Link href={"/prime"}>
                 <a
                   onClick={() => {
-                    SetVerCliente(false);
+                    setVerCliente(false);
+                    setEditar(false);
                   }}
                   className="text-gray-200 hover:text-white block mt-2 text-2xl font-medium "
                 >
                   Clientes
                 </a>
               </Link>
-              <Link href={"/"}>
-                <a className="text-gray-200 hover:text-white block mt-2 text-2xl font-medium ">
+              <Link href={"/prime"}>
+                <a
+                  onClick={() => {
+                    setVerCliente(false);
+                    setEditar(false);
+                    setCliente({});
+                  }}
+                  className="text-gray-200 hover:text-white block mt-2 text-2xl font-medium "
+                >
                   Nuevo Cliente
                 </a>
               </Link>

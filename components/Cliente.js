@@ -5,11 +5,16 @@ const Cliente = ({ cliente }) => {
   const router = useRouter();
   // console.log(cliente, "CLiente");
   const { nombre, empresa, email, telefono, id } = cliente;
-  const { SetVerCliente, SetCliente } = useAuth();
+  const { setVerCliente, setCliente, setEditar } = useAuth();
 
   const handleVer = () => {
-    SetVerCliente(true);
-    SetCliente(cliente);
+    setVerCliente(true);
+    setCliente(cliente);
+  };
+
+  const handleEdit = () => {
+    setEditar(true);
+    setCliente(cliente);
   };
 
   return (
@@ -37,6 +42,7 @@ const Cliente = ({ cliente }) => {
         <button
           type="button"
           className="bg-orange-500 block w-full text-white p-2 uppercase font-bold text-xs mt-2"
+          onClick={handleEdit}
         >
           Editar
         </button>

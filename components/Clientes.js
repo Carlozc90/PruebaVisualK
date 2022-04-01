@@ -2,7 +2,8 @@ import useAuth from "../hooks/useAuth";
 import Cliente from "./Cliente";
 
 const Clientes = () => {
-  const { laApi } = useAuth();
+  const { clientes } = useAuth();
+  console.log(clientes);
 
   return (
     <>
@@ -19,9 +20,8 @@ const Clientes = () => {
           </tr>
         </thead>
         <tbody>
-          {laApi.map((cliente, i) => (
-            <Cliente key={i} cliente={cliente} />
-          ))}
+          {clientes &&
+            clientes.map((cliente, i) => <Cliente key={i} cliente={cliente} />)}
         </tbody>
       </table>
     </>
