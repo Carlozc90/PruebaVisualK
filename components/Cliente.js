@@ -5,7 +5,7 @@ const Cliente = ({ cliente }) => {
   const router = useRouter();
   // console.log(cliente, "CLiente");
   const { nombre, empresa, email, telefono, id } = cliente;
-  const { setVerCliente, setCliente, setVerEditar } = useAuth();
+  const { setVerCliente, setCliente, setVerEditar, handleEliminar } = useAuth();
 
   const handleVer = () => {
     setVerCliente(true);
@@ -49,6 +49,9 @@ const Cliente = ({ cliente }) => {
         <button
           type="button"
           className="bg-red-500 block w-full text-white p-2 uppercase font-bold text-xs mt-2"
+          onClick={() => {
+            handleEliminar(id);
+          }}
         >
           Eliminar
         </button>

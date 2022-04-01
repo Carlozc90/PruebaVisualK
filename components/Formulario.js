@@ -22,8 +22,6 @@ const Formulario = () => {
   const [descripcion, setDescripcion] = useState("");
   const [id, setId] = useState("");
 
-  console.log("modo editar:", verEditar);
-
   const generarId = () => {
     const random = Math.random().toString(36).substring(2);
     const fecha = Date.now().toString(36);
@@ -74,107 +72,103 @@ const Formulario = () => {
   };
 
   return (
-    <>
-      {/* Formulario */}
-
-      <form className="mt-10" onSubmit={handleSubmit}>
-        <div className="mb-4">
-          <label
-            htmlFor="nombre"
-            className="uppercase text-gray-500 block text-xl font-bold"
-          >
-            Nombre:
-          </label>
-          <input
-            type="text"
-            name="nombre"
-            className="border w-full p-3 mt-3 bg-gray-50"
-            value={nombre}
-            onChange={(e) => setNombre(e.target.value)}
-          />
-        </div>
-        <div className="mb-4">
-          <label
-            htmlFor="email"
-            className="uppercase text-gray-500 block text-xl font-bold"
-          >
-            E-mail:
-          </label>
-          <input
-            type="email"
-            name="email"
-            className="border w-full p-3 mt-3 bg-gray-50"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-          />
-        </div>
-        <div className="mb-4">
-          <label
-            htmlFor="telefono"
-            className="uppercase text-gray-500 block text-xl font-bold"
-          >
-            Telefono:
-          </label>
-          <input
-            type="text"
-            name="telefono"
-            className="border w-full p-3 mt-3 bg-gray-50"
-            value={telefono}
-            onChange={(e) => setTelefono(e.target.value)}
-          />
-        </div>
-        <div className="mb-4">
-          <label
-            htmlFor="empresa"
-            className="uppercase text-gray-500 block text-xl font-bold"
-          >
-            Empresa:
-          </label>
-          <input
-            type="text"
-            name="empresa"
-            className="border w-full p-3 mt-3 bg-gray-50"
-            value={empresa}
-            onChange={(e) => setEmpresa(e.target.value)}
-          />
-        </div>
-        <div className="mb-4">
-          <label
-            htmlFor="direccion"
-            className="uppercase text-gray-500 block text-xl font-bold"
-          >
-            Direccion:
-          </label>
-          <input
-            type="text"
-            name="direccion"
-            className="border w-full p-3 mt-3 bg-gray-50"
-            value={direccion}
-            onChange={(e) => setDireccion(e.target.value)}
-          />
-        </div>
-        <div className="mb-4">
-          <label
-            htmlFor="descripcion"
-            className="uppercase text-gray-500 block text-xl font-bold"
-          >
-            Descripcion:
-          </label>
-          <textarea
-            className="border w-full p-3 mt-3 bg-gray-50"
-            value={descripcion}
-            onChange={(e) => setDescripcion(e.target.value)}
-          />
-        </div>
-
-        <button
-          type="submit"
-          className="bg-indigo-700 w-full py-3 px-10 rounded-xl text-white uppercase font-bold my-5 hover:cursor-pointer hover:bg-indigo-900 md:w-auto"
+    <form className="mt-10" onSubmit={handleSubmit}>
+      <div className="mb-4">
+        <label
+          htmlFor="nombre"
+          className="uppercase text-gray-500 block text-xl font-bold"
         >
-          Editar Cliente
-        </button>
-      </form>
-    </>
+          Nombre:
+        </label>
+        <input
+          type="text"
+          name="nombre"
+          className="border w-full p-3 mt-3 bg-gray-50"
+          value={nombre}
+          onChange={(e) => setNombre(e.target.value)}
+        />
+      </div>
+      <div className="mb-4">
+        <label
+          htmlFor="email"
+          className="uppercase text-gray-500 block text-xl font-bold"
+        >
+          E-mail:
+        </label>
+        <input
+          type="email"
+          name="email"
+          className="border w-full p-3 mt-3 bg-gray-50"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+        />
+      </div>
+      <div className="mb-4">
+        <label
+          htmlFor="telefono"
+          className="uppercase text-gray-500 block text-xl font-bold"
+        >
+          Telefono:
+        </label>
+        <input
+          type="text"
+          name="telefono"
+          className="border w-full p-3 mt-3 bg-gray-50"
+          value={telefono}
+          onChange={(e) => setTelefono(e.target.value)}
+        />
+      </div>
+      <div className="mb-4">
+        <label
+          htmlFor="empresa"
+          className="uppercase text-gray-500 block text-xl font-bold"
+        >
+          Empresa:
+        </label>
+        <input
+          type="text"
+          name="empresa"
+          className="border w-full p-3 mt-3 bg-gray-50"
+          value={empresa}
+          onChange={(e) => setEmpresa(e.target.value)}
+        />
+      </div>
+      <div className="mb-4">
+        <label
+          htmlFor="direccion"
+          className="uppercase text-gray-500 block text-xl font-bold"
+        >
+          Direccion:
+        </label>
+        <input
+          type="text"
+          name="direccion"
+          className="border w-full p-3 mt-3 bg-gray-50"
+          value={direccion}
+          onChange={(e) => setDireccion(e.target.value)}
+        />
+      </div>
+      <div className="mb-4">
+        <label
+          htmlFor="descripcion"
+          className="uppercase text-gray-500 block text-xl font-bold"
+        >
+          Descripcion:
+        </label>
+        <textarea
+          className="border w-full p-3 mt-3 bg-gray-50"
+          value={descripcion}
+          onChange={(e) => setDescripcion(e.target.value)}
+        />
+      </div>
+
+      <button
+        type="submit"
+        className="bg-indigo-700 w-full py-3 px-10 rounded-xl text-white uppercase font-bold my-5 hover:cursor-pointer hover:bg-indigo-900 md:w-auto"
+      >
+        Editar Cliente
+      </button>
+    </form>
   );
 };
 
