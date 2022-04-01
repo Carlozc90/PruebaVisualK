@@ -5,7 +5,7 @@ import Head from "next/head";
 import Link from "next/link";
 
 const Layout = ({ children }) => {
-  const { user } = useAuth();
+  const { user, SetVerCliente } = useAuth();
   const router = useRouter();
 
   useEffect(() => {
@@ -34,8 +34,13 @@ const Layout = ({ children }) => {
               CRM - Clientes
             </h2>
             <nav className="mt-10">
-              <Link href={"/"}>
-                <a className="text-gray-200 hover:text-white block mt-2 text-2xl font-medium ">
+              <Link href={"/prime"}>
+                <a
+                  onClick={() => {
+                    SetVerCliente(false);
+                  }}
+                  className="text-gray-200 hover:text-white block mt-2 text-2xl font-medium "
+                >
                   Clientes
                 </a>
               </Link>
@@ -47,7 +52,9 @@ const Layout = ({ children }) => {
             </nav>
           </aside>
 
-          <main className="w-4/5 h-screen overflow-y-scroll">{children}</main>
+          <main className="w-4/5 p-10 h-screen overflow-y-scroll">
+            {children}
+          </main>
         </div>
       ) : (
         <div>{children}</div>
