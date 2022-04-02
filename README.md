@@ -1,6 +1,7 @@
 ## Getting Started
 
 Abrir con firefox
+
 1: desactivar el TLS a la -> 1.0
 a: about:config
 b: security.tls.version.min -> 1

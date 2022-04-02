@@ -32,8 +32,6 @@ const Login = () => {
 
     // peticion de la api cookis
     obtenerCookies(usuarioApi);
-
-    // router.push("/prime");
   };
 
   useEffect(() => {

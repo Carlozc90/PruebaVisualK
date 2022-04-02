@@ -49,6 +49,7 @@ const AuthProvider = ({ children }) => {
 
   const router = useRouter();
 
+  // obtener las coockies
   const obtenerCookies = async (jsonusuario) => {
     try {
       const data = await axios
@@ -70,6 +71,10 @@ const AuthProvider = ({ children }) => {
       console.log(error);
     }
   };
+
+  useEffect(() => {
+    setClientes(laApi);
+  }, []);
 
   return (
     <AuthContext.Provider
