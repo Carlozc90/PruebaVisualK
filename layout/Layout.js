@@ -7,8 +7,14 @@ import Link from "next/link";
 const Layout = ({ children }) => {
   const router = useRouter();
 
-  const { user, setVerCliente, setVerEditar, setCliente, setVerCrear } =
-    useAuth();
+  const {
+    user,
+    setVerCliente,
+    setVerEditar,
+    setCliente,
+    setVerCrear,
+    setVerBuscardor,
+  } = useAuth();
 
   useEffect(() => {
     if (Object.values(user).includes("")) {
@@ -42,6 +48,7 @@ const Layout = ({ children }) => {
                     setVerCliente(false);
                     setVerEditar(false);
                     setVerCrear(false);
+                    setVerBuscardor(false);
                   }}
                   className="text-gray-200 hover:text-white block mt-2 text-2xl font-medium "
                 >
@@ -53,6 +60,7 @@ const Layout = ({ children }) => {
                   onClick={() => {
                     setVerCliente(false);
                     setVerEditar(false);
+                    setVerBuscardor(false);
                     setVerCrear(true);
                     // limpar el arreglo
                     setCliente({});
@@ -60,6 +68,19 @@ const Layout = ({ children }) => {
                   className="text-gray-200 hover:text-white block mt-2 text-2xl font-medium "
                 >
                   Nuevo Socio
+                </a>
+              </Link>
+              <Link href={"/prime"}>
+                <a
+                  onClick={() => {
+                    setVerCliente(false);
+                    setVerEditar(false);
+                    setVerCrear(false);
+                    setVerBuscardor(true);
+                  }}
+                  className="text-gray-200 hover:text-white block mt-2 text-2xl font-medium "
+                >
+                  Buscador
                 </a>
               </Link>
             </nav>

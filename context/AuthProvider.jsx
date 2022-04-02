@@ -4,30 +4,6 @@ import { useRouter } from "next/router";
 
 const AuthContext = createContext();
 
-//   api
-const laApi = [
-  {
-    nombre: "Carlos",
-    empresa: "netplay2",
-    email: "Carlozc90@gmail.com",
-    telefono: "9876543213",
-    descripcion:
-      "rum fuga. Et harum quidem rerum facilis est et expedita distinctio. Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus id quod maxime placeat facere possimus, omnis voluptas assumenda est, omnis dolor repellendus. Temporibus autem quibusdam et aut officii",
-    direccion: "Norte a Sur y Las Calles (Streets, St.) van de Este a Oeste.",
-    id: "1",
-  },
-  {
-    nombre: "Carlos2",
-    empresa: "netplay4",
-    email: "Carlozc90@gmail.com2",
-    telefono: "12222222",
-    descripcion:
-      "rum fuga. Et harum quidem rerum facilis est et expedita distinctio. Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus id quod maxime placeat facere possimus, omnis voluptas assumenda est, omnis dolor repellendus. Temporibus autem quibusdam et aut officii",
-    direccion: "8333 NW 53rd St. Doral, FL 33166.",
-    id: "2",
-  },
-];
-
 const AuthProvider = ({ children }) => {
   const [usuario, setUsuario] = useState("postulante3");
   const [password, setPassword] = useState("123qwe");
@@ -36,12 +12,16 @@ const AuthProvider = ({ children }) => {
   const [verCliente, setVerCliente] = useState(false);
   const [verEditar, setVerEditar] = useState(false);
   const [verCrear, setVerCrear] = useState(false);
+  const [verBuscador, setVerBuscardor] = useState(false);
 
   const [clientes, setClientes] = useState([]);
   const [cliente, setCliente] = useState({});
 
   const [cookies, setCookies] = useState({});
   const [session, setSession] = useState("");
+
+  // parametros
+  const [buscador, setBuscado] = useState([]);
 
   const handleEliminar = (id) => {
     const clientesActualizado = clientes.filter((item) => item.id !== id);
@@ -99,9 +79,30 @@ const AuthProvider = ({ children }) => {
     }
   };
 
-  useEffect(() => {
-    // setClientes(laApi);
-  }, []);
+  // obtener los usuarios
+  const obtenerBuscador = async (params, str) => {
+    try {
+      const { data } = await axios(
+        // `https://datacenter.visualkgroup.com:58346/b1s/v1/BusinessPartners('CS001')`,
+        `https://datacenter.visualkgroup.com:58346/b1s/v1/BusinessPartners?$select=CardCode,CardName,CardType,FederalTaxID,AdditionalID&$filter=startswith(${params}, '${str}')`,
+        {
+          withCredentials: true,
+        }
+      ).catch(function (error) {
+        // respuesta del servidor error
+        if (error.response) {
+          console.log(error.response.data);
+        }
+      });
+
+      console.log("Buscador", data.value);
+      setBuscado(data.value);
+
+      // setClientes(data.value);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   return (
     <AuthContext.Provider
@@ -122,9 +123,13 @@ const AuthProvider = ({ children }) => {
         setVerEditar,
         verCrear,
         setVerCrear,
+        verBuscador,
+        setVerBuscardor,
         handleEliminar,
         obtenerCookies,
         obtenerClientes,
+        obtenerBuscador,
+        buscador,
       }}
     >
       {children}

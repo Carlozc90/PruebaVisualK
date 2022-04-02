@@ -1,10 +1,14 @@
+import { useEffect } from "react";
 import useAuth from "../hooks/useAuth";
 import Cliente from "./Cliente";
 
 const Clientes = () => {
-  const { clientes } = useAuth();
+  const { clientes, obtenerClientes } = useAuth();
 
   // console.log("los clientes", clientes);
+  useEffect(() => {
+    obtenerClientes();
+  }, []);
 
   return (
     <>

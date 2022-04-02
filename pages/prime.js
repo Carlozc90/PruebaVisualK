@@ -1,3 +1,4 @@
+import Buscador from "../components/Buscador";
 import Clientes from "../components/Clientes";
 import EditarCliente from "../components/EditarCliente";
 import NuevoCliente from "../components/NuevoCliente";
@@ -6,7 +7,7 @@ import useAuth from "../hooks/useAuth";
 import Layout from "../layout/Layout";
 
 export default function Prime() {
-  const { verCliente, verEditar, verCrear } = useAuth();
+  const { verCliente, verEditar, verCrear, verBuscador } = useAuth();
   return (
     <Layout>
       {verCliente ? (
@@ -18,6 +19,9 @@ export default function Prime() {
       ) : verCrear ? (
         // ver Crear es true
         <NuevoCliente />
+      ) : verBuscador ? (
+        // ver Buscador
+        <Buscador />
       ) : (
         <Clientes />
       )}
