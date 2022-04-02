@@ -55,7 +55,7 @@ const Buscador = () => {
         </h1>
 
         <form onSubmit={hanleSubmit}>
-          <label className="block mb-3 font-bold text-gray-400 uppercase">
+          <label className="block mb-3 font-bold text-gray-400 uppercase mt-5">
             Elige parametro
           </label>
           <div className="flex gap-3 items-center">
@@ -95,7 +95,9 @@ const Buscador = () => {
             disabled={inputstate ? false : true}
             type="submit"
             className={`bg-indigo-700 w-full py-3 px-10 rounded-xl text-white uppercase font-bold my-5   md:w-auto ${
-              inputstate ? "hover:bg-indigo-900" : "cursor-not-allowed"
+              inputstate
+                ? "hover:bg-indigo-900"
+                : "cursor-not-allowed bg-indigo-300"
             } `}
           >
             Buscar

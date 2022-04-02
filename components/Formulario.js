@@ -1,8 +1,7 @@
 import { useEffect, useState } from "react";
-import { useRouter } from "next/router";
 import useAuth from "../hooks/useAuth";
 
-const Formulario = () => {
+const Formulario = ({ creacionSocio }) => {
   const {
     cliente,
     setClientes,
@@ -11,13 +10,15 @@ const Formulario = () => {
     verEditar,
     setVerEditar,
     setVerCrear,
+    usuario,
   } = useAuth();
-  const router = useRouter();
 
   const [nombre, setNombre] = useState("");
-  const [email, setEmail] = useState("");
-  const [telefono, setTelefono] = useState("");
-  const [empresa, setEmpresa] = useState("");
+  const [codigo, setCodigo] = useState("");
+  const [carta, setCarta] = useState("");
+  const [taxId, setTaxId] = useState("");
+  const [activador, setActivador] = useState(false);
+
   const [direccion, setDireccion] = useState("");
   const [descripcion, setDescripcion] = useState("");
   const [id, setId] = useState("");
@@ -29,36 +30,46 @@ const Formulario = () => {
     return random + fecha;
   };
 
+  // mode Edit
   useEffect(() => {
     if (Object.keys(cliente).length > 0) {
       setNombre(cliente.nombre);
-      setEmail(cliente.email);
-      setTelefono(cliente.telefono);
-      setEmpresa(cliente.empresa);
+      setCodigo(cliente.email);
+      setCarta(cliente.telefono);
+      setTaxId(cliente.empresa);
       setDireccion(cliente.direccion);
       setDescripcion(cliente.descripcion);
       setId(cliente.id);
     }
   }, [cliente]);
 
+  useEffect(() => {
+    if ([nombre, codigo, carta, taxId].includes("")) return;
+    setActivador(true);
+  }, [carta, codigo, nombre, taxId]);
+
   const handleSubmit = (e) => {
     e.preventDefault();
 
+    if ([nombre, codigo, carta, taxId].includes("")) {
+      console.log("Todos los Campos son obligatorias");
+      return;
+    }
+
     //   construccion del objeto
-    const clienteNew = {
-      nombre,
-      email,
-      telefono,
-      empresa,
-      direccion,
-      descripcion,
+    const socioNew = {
+      CardName: nombre,
+      CardCode: codigo.toLocaleUpperCase(),
+      CardType: carta.toLocaleUpperCase(),
+      FederalTaxID: taxId,
+      AdditionalID: usuario,
     };
 
     if (verEditar) {
       // editar el obj
-      clienteNew.id = cliente.id;
+      socioNew.id = cliente.id;
       const clienteActualizado = clientes.map((item) =>
-        item.id === cliente.id ? clienteNew : item
+        item.id === cliente.id ? socioNew : item
       );
       setClientes(clienteActualizado);
       setVerEditar(false);
@@ -66,9 +77,13 @@ const Formulario = () => {
       return;
     }
     // añadir copia del objeto
-    clienteNew.id = generarId();
-    setClientes([...clientes, clienteNew]);
-    setVerCrear(false);
+    // socioNew.id = generarId();
+    // setClientes([...clientes, socioNew]);
+
+    console.log("obj nuevo", socioNew);
+    creacionSocio(socioNew);
+
+    // setVerCrear(false);
   };
 
   return (
@@ -84,87 +99,66 @@ const Formulario = () => {
           type="text"
           name="nombre"
           className="border w-full p-3 mt-3 bg-gray-50"
+          placeholder="Nombre del Socio"
           value={nombre}
           onChange={(e) => setNombre(e.target.value)}
         />
       </div>
       <div className="mb-4">
         <label
-          htmlFor="email"
+          htmlFor="codigo"
           className="uppercase text-gray-500 block text-xl font-bold"
         >
-          E-mail:
-        </label>
-        <input
-          type="email"
-          name="email"
-          className="border w-full p-3 mt-3 bg-gray-50"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-        />
-      </div>
-      <div className="mb-4">
-        <label
-          htmlFor="telefono"
-          className="uppercase text-gray-500 block text-xl font-bold"
-        >
-          Telefono:
+          Codigo:
         </label>
         <input
           type="text"
-          name="telefono"
+          name="codigo"
           className="border w-full p-3 mt-3 bg-gray-50"
-          value={telefono}
-          onChange={(e) => setTelefono(e.target.value)}
+          placeholder="Ej: CS001"
+          value={codigo}
+          onChange={(e) => setCodigo(e.target.value)}
         />
       </div>
       <div className="mb-4">
         <label
-          htmlFor="empresa"
+          htmlFor="carta"
           className="uppercase text-gray-500 block text-xl font-bold"
         >
-          Empresa:
+          Tipo Carta:
         </label>
         <input
           type="text"
-          name="empresa"
+          name="carta"
           className="border w-full p-3 mt-3 bg-gray-50"
-          value={empresa}
-          onChange={(e) => setEmpresa(e.target.value)}
+          placeholder="Ej: C"
+          value={carta}
+          onChange={(e) => setCarta(e.target.value)}
         />
       </div>
       <div className="mb-4">
         <label
-          htmlFor="direccion"
+          htmlFor="taxId"
           className="uppercase text-gray-500 block text-xl font-bold"
         >
-          Direccion:
+          FederalTaxID
         </label>
         <input
           type="text"
-          name="direccion"
+          name="taxId"
+          placeholder="Ej: 1-3"
           className="border w-full p-3 mt-3 bg-gray-50"
-          value={direccion}
-          onChange={(e) => setDireccion(e.target.value)}
-        />
-      </div>
-      <div className="mb-4">
-        <label
-          htmlFor="descripcion"
-          className="uppercase text-gray-500 block text-xl font-bold"
-        >
-          Descripcion:
-        </label>
-        <textarea
-          className="border w-full p-3 mt-3 bg-gray-50"
-          value={descripcion}
-          onChange={(e) => setDescripcion(e.target.value)}
+          value={taxId}
+          onChange={(e) => setTaxId(e.target.value)}
         />
       </div>
 
       <button
+        disabled={activador ? false : true}
         type="submit"
-        className="bg-indigo-700 w-full py-3 px-10 rounded-xl text-white uppercase font-bold my-5 hover:cursor-pointer hover:bg-indigo-900 md:w-auto"
+        className={`bg-indigo-700 w-full py-3 px-10 rounded-xl text-white uppercase font-bold my-5   md:w-auto ${
+          activador ? "hover:bg-indigo-900" : "cursor-not-allowed bg-indigo-300"
+        } `}
       >
         Editar Cliente
       </button>

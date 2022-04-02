@@ -56,7 +56,7 @@ const AuthProvider = ({ children }) => {
     }
   };
 
-  // obtener los usuarios
+  // obtener los socios del usuario
   const obtenerClientes = async () => {
     try {
       const { data } = await axios(
@@ -79,7 +79,7 @@ const AuthProvider = ({ children }) => {
     }
   };
 
-  // obtener los usuarios
+  // obtener los sociobuscador
   const obtenerBuscador = async (params, str) => {
     try {
       const { data } = await axios(
@@ -99,6 +99,35 @@ const AuthProvider = ({ children }) => {
       setBuscado(data.value);
 
       // setClientes(data.value);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  // creacion del socio
+  const creacionSocio = async (jsonsocio) => {
+    try {
+      const { data } = await axios
+        .post(
+          "https://datacenter.visualkgroup.com:58346/b1s/v1/BusinessPartners",
+          JSON.stringify(jsonsocio),
+          { withCredentials: true }
+        )
+        .catch(function (error) {
+          // respuesta del servidor error
+          if (error.response) {
+            console.log(error.response.data);
+          }
+        });
+
+      console.log("creacion hecha");
+
+      // setCookies(data);
+      // setSession(data.SessionId);
+      // obtenerClientes();
+
+      // repocicionar al usuario
+      // router.push("/prime");
     } catch (error) {
       console.log(error);
     }
@@ -128,6 +157,7 @@ const AuthProvider = ({ children }) => {
         handleEliminar,
         obtenerCookies,
         obtenerClientes,
+        creacionSocio,
         obtenerBuscador,
         buscador,
       }}

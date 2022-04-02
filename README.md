@@ -9,4 +9,4 @@ b: security.tls.version.min -> 1
 2: desactivar los cors
 a: https://addons.mozilla.org/en-US/firefox/addon/cors-everywhere/
 
-1: npm run dev
+3: npm run dev
