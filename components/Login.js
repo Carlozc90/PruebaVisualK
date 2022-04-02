@@ -1,26 +1,44 @@
 import useAuth from "../hooks/useAuth";
 import { useRouter } from "next/router";
+import { useEffect } from "react";
 
 const Login = () => {
-  const { email, setEmail, password, setPassword, setUser } = useAuth();
+  const {
+    usuario,
+    setUsuario,
+    password,
+    setPassword,
+    setUser,
+    obtenerCookies,
+    user,
+    cookies,
+  } = useAuth();
   const router = useRouter();
 
   const handleAuth = (e) => {
     e.preventDefault();
 
-    if ([email, password].includes("")) {
+    if ([usuario, password].includes("")) {
       console.log("Todos los Campos son obligatorias");
       return;
     }
 
     // autentificar el usuario
-    setUser({
-      id: "Carlos",
-      keys: "1234abc",
-    });
+    const usuarioApi = {
+      CompanyDB: "VISUALK_CL",
+      UserName: usuario,
+      Password: password,
+    };
 
-    router.push("/prime");
+    // peticion de la api cookis
+    obtenerCookies(usuarioApi);
+
+    // router.push("/prime");
   };
+
+  useEffect(() => {
+    console.log("hay cookies", cookies);
+  }, [cookies]);
 
   return (
     <main className=" bg-slate-300 h-screen mx-auto grid grid-cols-2 gap-12 px-[80px] pb-32 items-center">
@@ -34,14 +52,14 @@ const Login = () => {
         <form onSubmit={handleAuth}>
           <div>
             <label className="uppercase text-gray-500 block text-xl font-bold">
-              Email
+              Usuario
             </label>
             <input
-              type="email"
-              placeholder="Email de Registro"
+              type="text"
+              placeholder="Su usuario"
               className=" border w-full p-3 mt-3 bg-gray-50 "
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              value={usuario}
+              onChange={(e) => setUsuario(e.target.value)}
             />
           </div>
           <div>

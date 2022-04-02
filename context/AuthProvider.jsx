@@ -1,5 +1,6 @@
 import axios from "axios";
 import { createContext, useEffect, useState } from "react";
+import { useRouter } from "next/router";
 
 const AuthContext = createContext();
 
@@ -27,20 +28,10 @@ const laApi = [
   },
 ];
 
-const layer = [
-  {
-    "odata.metadata":
-      "https://datacenter.visualkgroup.com:58346/b1s/v1/$metadata#B1Sessions/@Element",
-    SessionId: "85a3ce9e-b228-11ec-8000-0050569ff3d9",
-    Version: "930230",
-    SessionTimeout: 30,
-  },
-];
-
 const AuthProvider = ({ children }) => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [user, setUser] = useState({ id: "", key: "" });
+  const [usuario, setUsuario] = useState("postulante3");
+  const [password, setPassword] = useState("123qwe");
+  const [user, setUser] = useState({});
 
   const [verCliente, setVerCliente] = useState(false);
   const [verEditar, setVerEditar] = useState(false);
@@ -50,51 +41,41 @@ const AuthProvider = ({ children }) => {
   const [cliente, setCliente] = useState({});
 
   const [cookies, setCookies] = useState({});
-  const [pase, setPase] = useState(false);
-
-  useEffect(() => {
-    // setClientes(laApi);
-  }, []);
 
   const handleEliminar = (id) => {
     const clientesActualizado = clientes.filter((item) => item.id !== id);
     setClientes(clientesActualizado);
   };
 
-  const obtenerCookies = async () => {
+  const router = useRouter();
+
+  const obtenerCookies = async (jsonusuario) => {
     try {
-      const data = await axios.post(
-        "https://datacenter.visualkgroup.com:58346/b1s/v1/Login",
-        JSON.stringify({
-          CompanyDB: "VISUALK_CL",
-          UserName: "postulante3",
-          Password: "123qwe",
-        })
-        // { headers: { "content-type": "application/json" } }
-      );
-      console.log(`data: `, typeof data);
-      setCookies(data);
-      //   return data;
-      // setCookies{data};
+      const data = await axios
+        .post(
+          "https://datacenter.visualkgroup.com:58346/b1s/v1/Login",
+          JSON.stringify(jsonusuario)
+        )
+        .catch(function (error) {
+          // respuesta del servidor error
+          if (error.response) {
+            console.log(error.response.data);
+          }
+        });
+      setCookies(data.data);
+
+      // repocicionar al usuario
+      router.push("/prime");
     } catch (error) {
       console.log(error);
     }
   };
 
-  useEffect(() => {
-    // console.log("lol", obtenerCookies());
-    const hola = obtenerCookies();
-    console.log("aki", hola);
-
-    setPase(true);
-    // setCookies(obtenerCookies());
-  }, []);
-
   return (
     <AuthContext.Provider
       value={{
-        email,
-        setEmail,
+        usuario,
+        setUsuario,
         password,
         setPassword,
         user,
@@ -110,6 +91,7 @@ const AuthProvider = ({ children }) => {
         verCrear,
         setVerCrear,
         handleEliminar,
+        obtenerCookies,
       }}
     >
       {children}
