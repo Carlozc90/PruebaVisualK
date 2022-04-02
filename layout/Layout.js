@@ -33,7 +33,7 @@ const Layout = ({ children }) => {
         <div className="flex">
           <aside className=" w-1/5 bg-blue-700 px-5 py-10">
             <h2 className="text-4xl font-black text-center text-white">
-              CRM - Clientes
+              CRM - Socios
             </h2>
             <nav className="mt-10">
               <Link href={"/prime"}>
@@ -45,7 +45,7 @@ const Layout = ({ children }) => {
                   }}
                   className="text-gray-200 hover:text-white block mt-2 text-2xl font-medium "
                 >
-                  Clientes
+                  Dashboard
                 </a>
               </Link>
               <Link href={"/prime"}>
@@ -59,7 +59,7 @@ const Layout = ({ children }) => {
                   }}
                   className="text-gray-200 hover:text-white block mt-2 text-2xl font-medium "
                 >
-                  Nuevo Cliente
+                  Nuevo Socio
                 </a>
               </Link>
             </nav>

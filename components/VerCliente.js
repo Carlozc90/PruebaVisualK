@@ -1,7 +1,7 @@
 import useAuth from "../hooks/useAuth";
 
 function VerCliente() {
-  const { cliente } = useAuth();
+  const { cliente, obtenerClientes } = useAuth();
   const { nombre, email, telefono, empresa, descripcion, direccion } = cliente;
 
   return (

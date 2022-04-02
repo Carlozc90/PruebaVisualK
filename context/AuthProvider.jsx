@@ -41,6 +41,7 @@ const AuthProvider = ({ children }) => {
   const [cliente, setCliente] = useState({});
 
   const [cookies, setCookies] = useState({});
+  const [session, setSession] = useState("");
 
   const handleEliminar = (id) => {
     const clientesActualizado = clientes.filter((item) => item.id !== id);
@@ -52,10 +53,11 @@ const AuthProvider = ({ children }) => {
   // obtener las coockies
   const obtenerCookies = async (jsonusuario) => {
     try {
-      const data = await axios
+      const { data } = await axios
         .post(
           "https://datacenter.visualkgroup.com:58346/b1s/v1/Login",
-          JSON.stringify(jsonusuario)
+          JSON.stringify(jsonusuario),
+          { withCredentials: true }
         )
         .catch(function (error) {
           // respuesta del servidor error
@@ -63,7 +65,9 @@ const AuthProvider = ({ children }) => {
             console.log(error.response.data);
           }
         });
-      setCookies(data.data);
+      setCookies(data);
+      setSession(data.SessionId);
+      obtenerClientes();
 
       // repocicionar al usuario
       router.push("/prime");
@@ -72,8 +76,31 @@ const AuthProvider = ({ children }) => {
     }
   };
 
+  // obtener los usuarios
+  const obtenerClientes = async () => {
+    try {
+      const { data } = await axios(
+        // `https://datacenter.visualkgroup.com:58346/b1s/v1/BusinessPartners('CS001')`,
+        `https://datacenter.visualkgroup.com:58346/b1s/v1/BusinessPartners?$select=CardCode,CardName,CardType,FederalTaxID,AdditionalID&$filter=startswith(AdditionalID, 'postulante3')`,
+        {
+          withCredentials: true,
+        }
+      ).catch(function (error) {
+        // respuesta del servidor error
+        if (error.response) {
+          console.log(error.response.data);
+        }
+      });
+
+      // setear la respuesta filtro
+      setClientes(data.value);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   useEffect(() => {
-    setClientes(laApi);
+    // setClientes(laApi);
   }, []);
 
   return (
@@ -97,6 +124,7 @@ const AuthProvider = ({ children }) => {
         setVerCrear,
         handleEliminar,
         obtenerCookies,
+        obtenerClientes,
       }}
     >
       {children}

@@ -4,7 +4,7 @@ import { useRouter } from "next/router";
 const Cliente = ({ cliente }) => {
   const router = useRouter();
   // console.log(cliente, "CLiente");
-  const { nombre, empresa, email, telefono, id } = cliente;
+  const { AdditionalID, CardCode, CardName, CardType, FederalTaxID } = cliente;
   const { setVerCliente, setCliente, setVerEditar, handleEliminar } = useAuth();
 
   const handleVer = () => {
@@ -19,18 +19,20 @@ const Cliente = ({ cliente }) => {
 
   return (
     <tr className="border-b ">
-      <td className="p-3">{nombre}</td>
+      <td className="p-3">{AdditionalID}</td>
       <td className="p-3">
         <p>
-          <span className="text-gray-800 uppercase font-bold ">Email: </span>
-          {email}
+          <span className="text-gray-800 uppercase font-bold ">Nombre: </span>
+          {CardName}
         </p>
         <p>
-          <span className="text-gray-800 uppercase font-bold ">Tel: </span>
-          {telefono}
+          <span className="text-gray-800 uppercase font-bold ">
+            Tipo de carta:{" "}
+          </span>
+          {CardType}
         </p>
       </td>
-      <td className="p-3">{empresa}</td>
+      <td className="p-3">{CardCode}</td>
       <td className="p-3">
         <button
           type="button"

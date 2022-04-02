@@ -43,7 +43,7 @@ const Login = () => {
       <div className=" ">
         <h1 className="text-orange-400 font-black text-6xl text-center">
           Inicia Sesion y Administra tus{" "}
-          <span className="text-black">VisualK Group</span>
+          <span className="text-black">Socios VisualK Group</span>
         </h1>
       </div>
       <div className="mt-20 shadow-lg px-5 py-10 bg-slate-50 rounded-xl">
