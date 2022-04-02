@@ -27,6 +27,16 @@ const laApi = [
   },
 ];
 
+const layer = [
+  {
+    "odata.metadata":
+      "https://datacenter.visualkgroup.com:58346/b1s/v1/$metadata#B1Sessions/@Element",
+    SessionId: "85a3ce9e-b228-11ec-8000-0050569ff3d9",
+    Version: "930230",
+    SessionTimeout: 30,
+  },
+];
+
 const AuthProvider = ({ children }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -39,8 +49,11 @@ const AuthProvider = ({ children }) => {
   const [clientes, setClientes] = useState([]);
   const [cliente, setCliente] = useState({});
 
+  const [cookies, setCookies] = useState({});
+  const [pase, setPase] = useState(false);
+
   useEffect(() => {
-    setClientes(laApi);
+    // setClientes(laApi);
   }, []);
 
   const handleEliminar = (id) => {
@@ -50,25 +63,31 @@ const AuthProvider = ({ children }) => {
 
   const obtenerCookies = async () => {
     try {
-      const { data } = await axios.post(
+      const data = await axios.post(
         "https://datacenter.visualkgroup.com:58346/b1s/v1/Login",
-        {
-          // your expected POST request payload goes here
+        JSON.stringify({
           CompanyDB: "VISUALK_CL",
           UserName: "postulante3",
           Password: "123qwe",
-        }
+        })
+        // { headers: { "content-type": "application/json" } }
       );
-      // enter you logic when the fetch is successful
-      console.log(`data: `, data);
+      console.log(`data: `, typeof data);
+      setCookies(data);
+      //   return data;
+      // setCookies{data};
     } catch (error) {
-      // enter your logic for when there is an error (ex. error toast)
-      console.log(`error: `, error);
+      console.log(error);
     }
   };
 
   useEffect(() => {
-    obtenerCookies();
+    // console.log("lol", obtenerCookies());
+    const hola = obtenerCookies();
+    console.log("aki", hola);
+
+    setPase(true);
+    // setCookies(obtenerCookies());
   }, []);
 
   return (
