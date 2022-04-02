@@ -1,3 +1,4 @@
+import axios from "axios";
 import { createContext, useEffect, useState } from "react";
 
 const AuthContext = createContext();
@@ -46,6 +47,29 @@ const AuthProvider = ({ children }) => {
     const clientesActualizado = clientes.filter((item) => item.id !== id);
     setClientes(clientesActualizado);
   };
+
+  const obtenerCookies = async () => {
+    try {
+      const { data } = await axios.post(
+        "https://datacenter.visualkgroup.com:58346/b1s/v1/Login",
+        {
+          // your expected POST request payload goes here
+          CompanyDB: "VISUALK_CL",
+          UserName: "postulante3",
+          Password: "123qwe",
+        }
+      );
+      // enter you logic when the fetch is successful
+      console.log(`data: `, data);
+    } catch (error) {
+      // enter your logic for when there is an error (ex. error toast)
+      console.log(`error: `, error);
+    }
+  };
+
+  useEffect(() => {
+    obtenerCookies();
+  }, []);
 
   return (
     <AuthContext.Provider
