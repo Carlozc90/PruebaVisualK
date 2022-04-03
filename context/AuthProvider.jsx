@@ -1,9 +1,9 @@
 import axios from "axios";
 import { createContext, useEffect, useState } from "react";
 import { useRouter } from "next/router";
+import { formatearFecha, logFuncion } from "../helpers";
 
 const AuthContext = createContext();
-axios.defaults.withCredentials = true;
 
 const AuthProvider = ({ children }) => {
   const [usuario, setUsuario] = useState("postulante3");
@@ -14,6 +14,7 @@ const AuthProvider = ({ children }) => {
   const [verEditar, setVerEditar] = useState(false);
   const [verCrear, setVerCrear] = useState(false);
   const [verBuscador, setVerBuscardor] = useState(false);
+  const [verLog, setVerLog] = useState(false);
 
   const [clientes, setClientes] = useState([]);
   const [cliente, setCliente] = useState({});
@@ -24,10 +25,13 @@ const AuthProvider = ({ children }) => {
   // parametros
   const [buscador, setBuscado] = useState([]);
 
+  // LogRegistros
+  const [logArr, setLogArr] = useState([]);
+
   const handleEliminar = (id) => {
     // const clientesActualizado = clientes.filter((item) => item.id !== id);
     // setClientes(clientesActualizado);
-    eliminarSocio();
+    eliminarSocio(id);
   };
 
   const router = useRouter();
@@ -35,29 +39,56 @@ const AuthProvider = ({ children }) => {
   // obtener las coockies
   const obtenerCookies = async (jsonusuario) => {
     try {
-      const { data } = await axios
+      const data = await axios
         .post(
           "https://datacenter.visualkgroup.com:58346/b1s/v1/Login",
           JSON.stringify(jsonusuario),
           {
-            withCredentials: false,
+            withCredentials: true,
           }
         )
         .catch(function (error) {
           // respuesta del servidor error
           if (error.response) {
-            console.log(error.response.data);
+            console.log("error: ", error.response);
+            // ERROR
+            // Arreglo de Log
+            setLogArr([
+              ...logArr,
+              logFuncion(
+                "",
+                "Error en Login",
+                error.response.config.method,
+                error.response.status,
+                error.response.statusText,
+                error.response.data.error.message.value
+              ),
+            ]);
           }
         });
-      setCookies(data);
-      setSession(data.SessionId);
-      obtenerClientes();
-      console.log(cookies);
 
+      setCookies(data.data);
+      setSession(data.data.SessionId);
+      obtenerClientes();
+      // console.log("data", data);
+
+      // Succes
+      // Arreglo de Log
+      setLogArr([
+        ...logArr,
+        logFuncion(
+          usuario,
+          "Succes Login",
+          data.config.method,
+          data.status,
+          data.statusText,
+          "Succes"
+        ),
+      ]);
       // repocicionar al usuario
       router.push("/prime");
     } catch (error) {
-      console.log(error);
+      // sin los registros
     }
   };
 
@@ -93,18 +124,47 @@ const AuthProvider = ({ children }) => {
   // obtener los socios del usuario
   const obtenerClientes = async () => {
     try {
-      const { data } = await axios(
+      const data = await axios(
         // `https://datacenter.visualkgroup.com:58346/b1s/v1/BusinessPartners('CS001')`,
-        `https://datacenter.visualkgroup.com:58346/b1s/v1/BusinessPartners?$select=CardCode,CardName,CardType,FederalTaxID,AdditionalID&$filter=startswith(AdditionalID, 'postulante3')`
+        `https://datacenter.visualkgroup.com:58346/b1s/v1/BusinessPartners?$select=CardCode,CardName,CardType,FederalTaxID,AdditionalID&$filter=startswith(AdditionalID, 'postulante3')`,
+        {
+          withCredentials: true,
+        }
       ).catch(function (error) {
         // respuesta del servidor error
         if (error.response) {
           console.log(error.response.data);
+          // Arreglo de Log
+          setLogArr([
+            ...logArr,
+            logFuncion(
+              "",
+              "Error en Dashboard",
+              error.response.config.method,
+              error.response.status,
+              error.response.statusText,
+              error.response.data.error.message.value
+            ),
+          ]);
         }
       });
 
       // setear la respuesta filtro
-      setClientes(data.value);
+      setClientes(data.data.value);
+
+      // Succes
+      // Arreglo de Log
+      setLogArr([
+        ...logArr,
+        logFuncion(
+          usuario,
+          "Succes Dashboard",
+          data.config.method,
+          data.status,
+          data.statusText,
+          "Succes"
+        ),
+      ]);
     } catch (error) {
       console.log(error);
     }
@@ -113,7 +173,7 @@ const AuthProvider = ({ children }) => {
   // obtener los sociobuscador
   const obtenerBuscador = async (params, str) => {
     try {
-      const { data } = await axios(
+      const data = await axios(
         `https://datacenter.visualkgroup.com:58346/b1s/v1/BusinessPartners?$select=CardCode,CardName,CardType,FederalTaxID,AdditionalID&$filter=startswith(${params}, '${str}')`,
         {
           withCredentials: true,
@@ -122,11 +182,36 @@ const AuthProvider = ({ children }) => {
         // respuesta del servidor error
         if (error.response) {
           console.log(error.response.data);
+          // Arreglo de Log
+          setLogArr([
+            ...logArr,
+            logFuncion(
+              "",
+              "Error en Buscador",
+              error.response.config.method,
+              error.response.status,
+              error.response.statusText,
+              error.response.data.error.message.value
+            ),
+          ]);
         }
       });
 
-      console.log("Buscador", data.value);
-      setBuscado(data.value);
+      console.log("Buscador", data.data.value);
+      setBuscado(data.data.value);
+      // Succes
+      // Arreglo de Log
+      setLogArr([
+        ...logArr,
+        logFuncion(
+          usuario,
+          "Succes Buscador",
+          data.config.method,
+          data.status,
+          data.statusText,
+          "Succes"
+        ),
+      ]);
 
       // setClientes(data.value);
     } catch (error) {
@@ -137,7 +222,7 @@ const AuthProvider = ({ children }) => {
   // creacion del socio
   const creacionSocio = async (jsonsocio) => {
     try {
-      const { data } = await axios
+      const data = await axios
         .post(
           "https://datacenter.visualkgroup.com:58346/b1s/v1/BusinessPartners",
           JSON.stringify(jsonsocio),
@@ -147,13 +232,39 @@ const AuthProvider = ({ children }) => {
           // respuesta del servidor error
           if (error.response) {
             console.log(error.response.data);
+            // Arreglo de Log
+            setLogArr([
+              ...logArr,
+              logFuncion(
+                "",
+                "Error Creacion Socio",
+                error.response.config.method,
+                error.response.status,
+                error.response.statusText,
+                error.response.data.error.message.value
+              ),
+            ]);
           }
         });
 
       console.log("creacion hecha");
 
-      // setCookies(data);
-      // setSession(data.SessionId);
+      // Succes
+      // Arreglo de Log
+      setLogArr([
+        ...logArr,
+        logFuncion(
+          usuario,
+          "Succes Creacion",
+          data.config.method,
+          data.status,
+          data.statusText,
+          "Succes"
+        ),
+      ]);
+
+      console.log("creacion: ", data);
+
       // obtenerClientes();
 
       // repocicionar al usuario
@@ -165,64 +276,92 @@ const AuthProvider = ({ children }) => {
 
   // editar socio ERROR
   const editarSocio = async (cardcode, jsonmodificado) => {
-    // try {
-    //   const { data } = await axios
-    //     .patch(
-    //       `https://datacenter.visualkgroup.com:58346/b1s/v1/BusinessPartners('CS001')`,
-    //       {
-    //         withCredentials: true,
-    //       },
-    //       JSON.stringify({ CardName: "Carlos(2)" })
-    //     )
-    //     .catch(function (error) {
-    //       // respuesta del servidor error
-    //       if (error.response) {
-    //         console.log(error.response.data);
-    //       }
-    //     });
-    //   // setear la respuesta filtro
-    //   console.log("axios patch ");
-    // } catch (error) {
-    //   console.log(error);
-    // }
-    // try {
-    //   const { data } = await axios
-    //     .patch(
-    //       `https://datacenter.visualkgroup.com:58346/b1s/v1/BusinessPartners('${cardcode}')`,
-    //       JSON.stringify(jsonmodificado),
-    //       { withCredentials: true }
-    //     )
-    //     .catch(function (error) {
-    //       // respuesta del servidor error
-    //       if (error.response) {
-    //         console.log(error.response.data);
-    //       }
-    //     });
-    //   console.log("modificado");
-    //   // // repocicionar al usuario
-    //   // router.push("/prime");
-    // } catch (error) {
-    //   console.log(error);
-    // }
-  };
-
-  // eliminando socio
-  const eliminarSocio = async () => {
-    console.log("eliminando");
     try {
-      const { data } = await axios
-        .delete(
-          `https://datacenter.visualkgroup.com:58346/b1s/v1/BusinessPartners('CS003')`
+      const data = await axios
+        .patch(
+          `https://datacenter.visualkgroup.com:58346/b1s/v1/BusinessPartners('${cardcode}')`,
+          JSON.stringify(jsonmodificado),
+          { withCredentials: true }
         )
         .catch(function (error) {
           // respuesta del servidor error
           if (error.response) {
             console.log(error.response.data);
+            // Arreglo de Log
+            setLogArr([
+              ...logArr,
+              logFuncion(
+                "",
+                "Error Edicion Socio",
+                error.response.config.method,
+                error.response.status,
+                error.response.statusText,
+                error.response.data.error.message.value
+              ),
+            ]);
           }
         });
+      console.log("modificado");
+      setLogArr([
+        ...logArr,
+        logFuncion(
+          usuario,
+          "Succes Edicion",
+          data.config.method,
+          data.status,
+          data.statusText,
+          "Succes"
+        ),
+      ]);
+      // // repocicionar al usuario
+      // router.push("/prime");
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
-      // setear la respuesta filtro
-      // console.log("eliminado con exito");
+  // eliminando socio Error
+  const eliminarSocio = async (cardcode) => {
+    console.log("eliminando");
+
+    try {
+      axios
+        .delete(
+          `https://datacenter.visualkgroup.com:58346/b1s/v1/BusinessPartners('${cardcode}')`,
+          { withCredentials: true }
+        )
+        .catch(function (error) {
+          // respuesta del servidor error
+          if (error.response) {
+            console.log(error.response.data);
+            // Arreglo de Log
+            setLogArr([
+              ...logArr,
+              logFuncion(
+                "",
+                "Error Eliminar Socio",
+                error.response.config.method,
+                error.response.status,
+                error.response.statusText,
+                error.response.data.error.message.value
+              ),
+            ]);
+          }
+        });
+      console.log("modificado");
+      setLogArr([
+        ...logArr,
+        logFuncion(
+          usuario,
+          "Succes Eliminacion",
+          data.config.method,
+          data.status,
+          data.statusText,
+          "Succes"
+        ),
+      ]);
+      // // repocicionar al usuario
+      // router.push("/prime");
     } catch (error) {
       console.log(error);
     }
@@ -249,6 +388,8 @@ const AuthProvider = ({ children }) => {
         setVerCrear,
         verBuscador,
         setVerBuscardor,
+        verLog,
+        setVerLog,
         handleEliminar,
         obtenerCookies,
         obtenerClientes,
@@ -256,6 +397,7 @@ const AuthProvider = ({ children }) => {
         obtenerBuscador,
         editarSocio,
         buscador,
+        logArr,
       }}
     >
       {children}

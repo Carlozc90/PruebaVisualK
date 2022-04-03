@@ -10,8 +10,8 @@ const PLANES = [
   },
   {
     id: 2,
-    nombre: "Completo",
-    place: "Nombre Completo",
+    nombre: "Codigo",
+    place: "CardCode",
   },
 ];
 

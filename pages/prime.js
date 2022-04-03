@@ -1,13 +1,14 @@
 import Buscador from "../components/Buscador";
 import Clientes from "../components/Clientes";
 import EditarCliente from "../components/EditarCliente";
+import LogPage from "../components/LogPage";
 import NuevoCliente from "../components/NuevoCliente";
 import VerCliente from "../components/VerCliente";
 import useAuth from "../hooks/useAuth";
 import Layout from "../layout/Layout";
 
 export default function Prime() {
-  const { verCliente, verEditar, verCrear, verBuscador } = useAuth();
+  const { verCliente, verEditar, verCrear, verBuscador, verLog } = useAuth();
   return (
     <Layout>
       {verCliente ? (
@@ -22,6 +23,8 @@ export default function Prime() {
       ) : verBuscador ? (
         // ver Buscador
         <Buscador />
+      ) : verLog ? (
+        <LogPage />
       ) : (
         <Clientes />
       )}

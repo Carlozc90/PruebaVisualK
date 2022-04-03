@@ -14,21 +14,22 @@ const Layout = ({ children }) => {
     setCliente,
     setVerCrear,
     setVerBuscardor,
+    setVerLog,
   } = useAuth();
 
-  useEffect(() => {
-    if (Object.values(user).includes("")) {
-      //   router.push("/");
-      console.log("esta vacio paso");
-      return;
-    }
-    console.log("contiene algo");
-  }, [router, user]);
+  // useEffect(() => {
+  //   if (Object.values(user).includes("")) {
+  //     //   router.push("/");
+  //     console.log("esta vacio paso");
+  //     return;
+  //   }
+  //   console.log("contiene algo");
+  // }, [router, user]);
 
   return (
     <>
       <Head>
-        <title>Create Next App</title>
+        <title>CRM Socios</title>
         <meta name="description" content="Test Prueba" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
@@ -49,6 +50,7 @@ const Layout = ({ children }) => {
                     setVerEditar(false);
                     setVerCrear(false);
                     setVerBuscardor(false);
+                    setVerLog(false);
                   }}
                   className="text-gray-200 hover:text-white block mt-2 text-2xl font-medium "
                 >
@@ -62,6 +64,7 @@ const Layout = ({ children }) => {
                     setVerEditar(false);
                     setVerBuscardor(false);
                     setVerCrear(true);
+                    setVerLog(false);
                     // limpar el arreglo
                     setCliente({});
                   }}
@@ -77,6 +80,7 @@ const Layout = ({ children }) => {
                     setVerEditar(false);
                     setVerCrear(false);
                     setVerBuscardor(true);
+                    setVerLog(false);
                   }}
                   className="text-gray-200 hover:text-white block mt-2 text-2xl font-medium "
                 >
@@ -84,6 +88,22 @@ const Layout = ({ children }) => {
                 </a>
               </Link>
             </nav>
+            <div className="mt-56">
+              <Link href={"/prime"}>
+                <a
+                  onClick={() => {
+                    setVerCliente(false);
+                    setVerEditar(false);
+                    setVerCrear(false);
+                    setVerBuscardor(false);
+                    setVerLog(true);
+                  }}
+                  className="text-gray-200 hover:text-white block mt-2 text-2xl font-medium "
+                >
+                  Registro Log
+                </a>
+              </Link>
+            </div>
           </aside>
 
           <main className="w-4/5 p-10 h-screen overflow-y-scroll">
@@ -98,17 +118,3 @@ const Layout = ({ children }) => {
 };
 
 export default Layout;
-
-{
-  /* <Head>
-        <title>Create Next App</title>
-        <meta name="description" content="Test Prueba" />
-        <link rel="icon" href="/favicon.ico" />
-      </Head> */
-}
-{
-  /* <div className="flex min-h-screen">
-        <aside className="bg-blue-400 w-1/4 px-5 py-10">1</aside>
-        <div className="w-3/4 p-10 h-screen overflow-scroll">2</div>
-      </div> */
-}
