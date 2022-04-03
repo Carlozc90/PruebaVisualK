@@ -52,7 +52,7 @@ const Cliente = ({ cliente }) => {
           type="button"
           className="bg-red-500 block w-full text-white p-2 uppercase font-bold text-xs mt-2"
           onClick={() => {
-            handleEliminar(id);
+            handleEliminar();
           }}
         >
           Eliminar

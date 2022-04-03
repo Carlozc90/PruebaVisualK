@@ -10,3 +10,5 @@ b: security.tls.version.min -> 1
 a: https://addons.mozilla.org/en-US/firefox/addon/cors-everywhere/
 
 3: npm run dev
+
+desactivado los botones de editar y eliminar

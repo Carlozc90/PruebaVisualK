@@ -11,13 +11,15 @@ const Formulario = ({ creacionSocio }) => {
     setVerEditar,
     setVerCrear,
     usuario,
+    editarSocio,
   } = useAuth();
 
   const [nombre, setNombre] = useState("");
   const [codigo, setCodigo] = useState("");
   const [carta, setCarta] = useState("");
   const [taxId, setTaxId] = useState("");
-  const [activador, setActivador] = useState(false);
+  const [activadorcreacion, setActivadorCreacion] = useState(false);
+  const [activadorEdit, setActivadorEdit] = useState(false);
 
   const [direccion, setDireccion] = useState("");
   const [descripcion, setDescripcion] = useState("");
@@ -32,20 +34,18 @@ const Formulario = ({ creacionSocio }) => {
 
   // mode Edit
   useEffect(() => {
+    // console.log("elcliente", cliente);
     if (Object.keys(cliente).length > 0) {
-      setNombre(cliente.nombre);
-      setCodigo(cliente.email);
-      setCarta(cliente.telefono);
-      setTaxId(cliente.empresa);
-      setDireccion(cliente.direccion);
-      setDescripcion(cliente.descripcion);
-      setId(cliente.id);
+      setNombre(cliente.CardName);
+      setCodigo(cliente.CardCode);
+      setCarta(cliente.CardType);
+      setTaxId(cliente.FederalTaxID);
     }
   }, [cliente]);
 
   useEffect(() => {
     if ([nombre, codigo, carta, taxId].includes("")) return;
-    setActivador(true);
+    setActivadorCreacion(true);
   }, [carta, codigo, nombre, taxId]);
 
   const handleSubmit = (e) => {
@@ -65,14 +65,23 @@ const Formulario = ({ creacionSocio }) => {
       AdditionalID: usuario,
     };
 
+    const socioEdit = {
+      CardName: nombre,
+    };
+
     if (verEditar) {
+      console.log("modo editando", socioEdit);
+
+      editarSocio(cliente.CardCode, socioEdit);
+
       // editar el obj
-      socioNew.id = cliente.id;
-      const clienteActualizado = clientes.map((item) =>
-        item.id === cliente.id ? socioNew : item
-      );
-      setClientes(clienteActualizado);
-      setVerEditar(false);
+      // socioNew.id = cliente.id;
+      // const clienteActualizado = clientes.map((item) =>
+      //   item.id === cliente.id ? socioNew : item
+      // );
+
+      // setClientes(clienteActualizado);
+      // setVerEditar(false);
 
       return;
     }
@@ -154,10 +163,12 @@ const Formulario = ({ creacionSocio }) => {
       </div>
 
       <button
-        disabled={activador ? false : true}
+        disabled={activadorcreacion ? false : true}
         type="submit"
         className={`bg-indigo-700 w-full py-3 px-10 rounded-xl text-white uppercase font-bold my-5   md:w-auto ${
-          activador ? "hover:bg-indigo-900" : "cursor-not-allowed bg-indigo-300"
+          activadorcreacion
+            ? "hover:bg-indigo-900"
+            : "cursor-not-allowed bg-indigo-300"
         } `}
       >
         Editar Cliente

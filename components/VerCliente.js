@@ -1,8 +1,9 @@
+import { useEffect } from "react";
 import useAuth from "../hooks/useAuth";
 
 function VerCliente() {
-  const { cliente, obtenerClientes } = useAuth();
-  const { nombre, email, telefono, empresa, descripcion, direccion } = cliente;
+  const { cliente } = useAuth();
+  const { AdditionalID, CardCode, CardName, CardType, FederalTaxID } = cliente;
 
   return (
     <>
@@ -10,28 +11,26 @@ function VerCliente() {
       <p className="mt-3">Informacion del Cliente</p>
 
       <p className="text-4xl text-gray-800 mt-10 font-bold">
-        Cliente:{" "}
+        Socio:{" "}
         <span className="text-gray-800 text-3xl uppercase font-semibold">
-          {nombre}
+          {CardName}
         </span>
       </p>
       <p className="text-2xl text-gray-800 mt-2 font-bold">
-        Email: <span className="text-gray-700  font-semibold">{email}</span>
+        CardCode:{" "}
+        <span className="text-gray-700  font-semibold">{CardCode}</span>
       </p>
       <p className="text-2xl text-gray-800 mt-2 font-bold">
-        Telefono:{" "}
-        <span className="text-gray-700  font-semibold">{telefono}</span>
+        CardType:{" "}
+        <span className="text-gray-700  font-semibold">{CardType}</span>
       </p>
       <p className="text-2xl text-gray-800 mt-2 font-bold">
-        Empresa: <span className="text-gray-700  font-semibold">{empresa}</span>
+        Usuario:{" "}
+        <span className="text-gray-700  font-semibold">{AdditionalID}</span>
       </p>
       <p className="text-2xl text-gray-800 mt-2 font-bold">
-        Direccion:{" "}
-        <span className="text-gray-700  font-semibold">{direccion}</span>
-      </p>
-      <p className="text-2xl text-gray-800 mt-4 font-bold">
-        Descripcion:{" "}
-        <span className="text-gray-700  font-semibold">{descripcion}</span>
+        TaxID:{" "}
+        <span className="text-gray-700  font-semibold">{FederalTaxID}</span>
       </p>
     </>
   );
