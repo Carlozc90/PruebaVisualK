@@ -3,7 +3,7 @@ import { createContext, useEffect, useState } from "react";
 import { useRouter } from "next/router";
 
 const AuthContext = createContext();
-// axios.defaults.withCredentials = true;
+axios.defaults.withCredentials = true;
 
 const AuthProvider = ({ children }) => {
   const [usuario, setUsuario] = useState("postulante3");
@@ -38,7 +38,10 @@ const AuthProvider = ({ children }) => {
       const { data } = await axios
         .post(
           "https://datacenter.visualkgroup.com:58346/b1s/v1/Login",
-          JSON.stringify(jsonusuario)
+          JSON.stringify(jsonusuario),
+          {
+            withCredentials: false,
+          }
         )
         .catch(function (error) {
           // respuesta del servidor error
@@ -92,10 +95,7 @@ const AuthProvider = ({ children }) => {
     try {
       const { data } = await axios(
         // `https://datacenter.visualkgroup.com:58346/b1s/v1/BusinessPartners('CS001')`,
-        `https://datacenter.visualkgroup.com:58346/b1s/v1/BusinessPartners?$select=CardCode,CardName,CardType,FederalTaxID,AdditionalID&$filter=startswith(AdditionalID, 'postulante3')`,
-        {
-          withCredentials: true,
-        }
+        `https://datacenter.visualkgroup.com:58346/b1s/v1/BusinessPartners?$select=CardCode,CardName,CardType,FederalTaxID,AdditionalID&$filter=startswith(AdditionalID, 'postulante3')`
       ).catch(function (error) {
         // respuesta del servidor error
         if (error.response) {
@@ -212,10 +212,7 @@ const AuthProvider = ({ children }) => {
     try {
       const { data } = await axios
         .delete(
-          `https://datacenter.visualkgroup.com:58346/b1s/v1/BusinessPartners('CS003')`,
-          {
-            withCredentials: true,
-          }
+          `https://datacenter.visualkgroup.com:58346/b1s/v1/BusinessPartners('CS003')`
         )
         .catch(function (error) {
           // respuesta del servidor error
