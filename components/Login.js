@@ -1,6 +1,7 @@
 import useAuth from "../hooks/useAuth";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
+import { toast } from "react-toastify";
 
 const Login = () => {
   const {
@@ -9,9 +10,11 @@ const Login = () => {
     password,
     setPassword,
     setUser,
-    obtenerCookies,
+    axiosLogin,
     user,
     cookies,
+    obtenerLogServer,
+    obteneritem,
   } = useAuth();
   const router = useRouter();
 
@@ -20,6 +23,7 @@ const Login = () => {
 
     if ([usuario, password].includes("")) {
       console.log("Todos los Campos son obligatorias");
+      toast.error("Todos los Campos son obligatorias");
       return;
     }
 
@@ -31,7 +35,11 @@ const Login = () => {
     };
 
     // peticion de la api cookis
-    obtenerCookies(usuarioApi);
+    axiosLogin(usuarioApi);
+  };
+
+  const handlesegundoboton = () => {
+    obteneritem();
   };
 
   useEffect(() => {

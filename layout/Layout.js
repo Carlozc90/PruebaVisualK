@@ -3,6 +3,8 @@ import { useEffect } from "react";
 import useAuth from "../hooks/useAuth";
 import Head from "next/head";
 import Link from "next/link";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const Layout = ({ children }) => {
   const router = useRouter();
@@ -113,6 +115,8 @@ const Layout = ({ children }) => {
       ) : (
         <div>{children}</div>
       )}
+
+      <ToastContainer />
     </>
   );
 };
