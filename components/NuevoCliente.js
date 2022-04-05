@@ -2,7 +2,7 @@ import useAuth from "../hooks/useAuth";
 import Formulario from "./Formulario";
 
 const NuevoCliente = () => {
-  const { creacionSocio } = useAuth();
+  const { axiosCrecion } = useAuth();
   return (
     <>
       <h1 className="font-black text-4xl text-blue-900">Crear nuevo Socio</h1>
@@ -13,7 +13,7 @@ const NuevoCliente = () => {
           Crear Socio
         </h1>
 
-        <Formulario creacionSocio={creacionSocio} />
+        <Formulario axiosCrecion={axiosCrecion} />
       </div>
     </>
   );

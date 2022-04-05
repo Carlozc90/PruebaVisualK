@@ -1,35 +1,43 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import useAuth from "../hooks/useAuth";
 import Cliente from "./Cliente";
 
 const Clientes = () => {
-  const { clientes, obtenerClientes } = useAuth();
-
-  // console.log("los clientes", clientes);
-  useEffect(() => {
-    obtenerClientes();
-  }, []);
+  const { clientes, axiosTusClientes, mostrarPanel, handleMostrarDash } =
+    useAuth();
 
   return (
     <>
       <h1 className="text-4xl text-blue-600 font-semibold">Socios</h1>
       <p className="mt-3">Administra tus Socios</p>
 
-      <table className="w-full bg-slate-500 mt-5 table-auto shadow">
-        <thead className="bg-blue-800 text-white">
-          <tr>
-            <th className="p-2">Usuario</th>
-            <th className="p-2">Socios</th>
-            <th className="p-2">Codigo</th>
-            <th className="p-2">Acciones</th>
-          </tr>
-        </thead>
-        <tbody>
-          {/* {clientes && console.log("entra", clientes)} */}
-          {clientes &&
-            clientes.map((cliente, i) => <Cliente key={i} cliente={cliente} />)}
-        </tbody>
-      </table>
+      {mostrarPanel ? (
+        <table className="w-full bg-slate-500 mt-5 table-auto shadow">
+          <thead className="bg-blue-800 text-white">
+            <tr>
+              <th className="p-2">Usuario</th>
+              <th className="p-2">Socios</th>
+              <th className="p-2">Codigo</th>
+              <th className="p-2">Acciones</th>
+            </tr>
+          </thead>
+          <tbody>
+            {clientes &&
+              clientes.map((cliente, i) => (
+                <Cliente key={i} cliente={cliente} />
+              ))}
+          </tbody>
+        </table>
+      ) : (
+        <button
+          type="submit"
+          value="Iniciar Sesion"
+          className="bg-indigo-700 w-full py-3 px-10 rounded-xl text-white uppercase font-bold my-5 hover:cursor-pointer hover:bg-indigo-800 md:w-auto"
+          onClick={handleMostrarDash}
+        >
+          Mostrar tus socios
+        </button>
+      )}
     </>
   );
 };

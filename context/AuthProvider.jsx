@@ -7,9 +7,12 @@ import { toast } from "react-toastify";
 const AuthContext = createContext();
 
 const AuthProvider = ({ children }) => {
+  const router = useRouter();
+
   const [usuario, setUsuario] = useState("");
   const [password, setPassword] = useState("");
   const [user, setUser] = useState({});
+  const [auth, setAuth] = useState(false);
 
   const [verCliente, setVerCliente] = useState(false);
   const [verEditar, setVerEditar] = useState(false);
@@ -20,6 +23,8 @@ const AuthProvider = ({ children }) => {
   const [clientes, setClientes] = useState([]);
   const [cliente, setCliente] = useState({});
 
+  // funcionalidad
+  const [mostrarPanel, setMostrarPanel] = useState(false);
   const [cookies, setCookies] = useState({});
   const [session, setSession] = useState("");
 
@@ -35,15 +40,20 @@ const AuthProvider = ({ children }) => {
     eliminarSocio(id);
   };
 
-  const router = useRouter();
+  const handleMostrarDash = () => {
+    console.log("click");
+    setMostrarPanel(!mostrarPanel);
+    axiosTusClientes(usuario);
+  };
 
+  // peticion login
   const axiosLogin = async (user) => {
     console.log("click login");
 
     try {
       const toastId = toast.loading("cargando");
       await axios
-        .post("http://localhost:5000/visualk-login", user)
+        .post(`http://localhost:5000/visualk-login`, user)
         .catch((error) => console.error("Error:", error))
         .then(function (response) {
           console.log("respuesta", response.data);
@@ -55,6 +65,7 @@ const AuthProvider = ({ children }) => {
               isLoading: false,
               autoClose: 5000,
             });
+            setAuth(false);
           } else {
             // ok
             toast.update(toastId, {
@@ -63,165 +74,110 @@ const AuthProvider = ({ children }) => {
               isLoading: false,
               autoClose: 5000,
             });
+            setAuth(true);
             router.push("/prime");
           }
-
-          // const id = toast.loading("Please wait...");
-          // //do something else
-          // toast.update(id, {
-          //   render: "All is good",
-          //   type: "success",
-          //   isLoading: false,
-          // });
         });
     } catch (error) {
       console.log(error);
     }
   };
 
-  const obteneritem = async (jsonusuario) => {
-    console.log("click obtener id");
+  // obtener los socios del usuario
+  const axiosTusClientes = async (usuario) => {
+    if (usuario === "") usuario = "postulante3"; // protejer la ruta
+    try {
+      await axios(`http://localhost:5000/visualk-dashboard/${usuario}`)
+        .catch((error) => console.error("Error:", error))
+        .then(function (response) {
+          console.log("respuesta", response.data);
+          setClientes(response.data.value);
+
+          if (response.data.error) toast.error("Error");
+        });
+    } catch (error) {
+      console.log(error);
+      if (response.data.error) {
+        toast.error("Error");
+      }
+    }
+
     // try {
-    //   await axios
-    //     .get("http://localhost:5000/visualk-id")
-    //     .catch((error) => console.error("Error:", error))
-    //     .then(function (response) {
-    //       console.log("succes", response.data);
-    //     });
+    //   const data = await axios(`http://localhost:5000/visualk-login')`).catch(
+    //     function (error) {
+    //       if (error.response) {
+    //         console.log(error.response.data);
+    //         // Arreglo de Log
+    //         setLogArr([
+    //           ...logArr,
+    //           logFuncion(
+    //             "",
+    //             "Error en Dashboard",
+    //             error.response.config.method,
+    //             error.response.status,
+    //             error.response.statusText,
+    //             error.response.data.error.message.value
+    //           ),
+    //         ]);
+    //       }
+    //     }
+    //   );
+
+    //   // setear la respuesta filtro
+    //   setClientes(data.data.value);
+
+    //   // Succes
+    //   // Arreglo de Log
+    //   setLogArr([
+    //     ...logArr,
+    //     logFuncion(
+    //       usuario,
+    //       "Succes Dashboard",
+    //       data.config.method,
+    //       data.status,
+    //       data.statusText,
+    //       "Succes"
+    //     ),
+    //   ]);
     // } catch (error) {
     //   console.log(error);
     // }
   };
 
-  // obtener las coockies
-  // const axiosLogin = async (jsonusuario) => {
-  //   try {
-  //     const data = await axios
-  //       .post(
-  //         "https://datacenter.visualkgroup.com:58346/b1s/v1/Login",
-  //         JSON.stringify(jsonusuario),
-  //         {
-  //           withCredentials: true,
-  //         }
-  //       )
-  //       .catch(function (error) {
-  //         // respuesta del servidor error
-  //         if (error.response) {
-  //           console.log("error: ", error.response);
-  //           // ERROR
-  //           // Arreglo de Log
-  //           setLogArr([
-  //             ...logArr,
-  //             logFuncion(
-  //               "",
-  //               "Error en Login",
-  //               error.response.config.method,
-  //               error.response.status,
-  //               error.response.statusText,
-  //               error.response.data.error.message.value
-  //             ),
-  //           ]);
-  //         }
-  //       });
+  // creacion del socio
+  const axiosCrecion = async (jsonSocio) => {
+    console.log("click creacion", jsonSocio);
 
-  //     setCookies(data.data);
-  //     setSession(data.data.SessionId);
-  //     obtenerClientes();
-  //     // console.log("data", data);
-
-  //     // Succes
-  //     // Arreglo de Log
-  //     setLogArr([
-  //       ...logArr,
-  //       logFuncion(
-  //         usuario,
-  //         "Succes Login",
-  //         data.config.method,
-  //         data.status,
-  //         data.statusText,
-  //         "Succes"
-  //       ),
-  //     ]);
-  //     // repocicionar al usuario
-  //     router.push("/prime");
-  //   } catch (error) {
-  //     // sin los registros
-  //   }
-  // };
-
-  // async function axiosLogin() {
-  //   // cookie_header = document.getElementById("cookie_data");
-  //   const usuarioApi = {
-  //     CompanyDB: "VISUALK_CL",
-  //     UserName: "postulante3",
-  //     Password: "123qwe",
-  //   };
-
-  //   const url = "https://datacenter.visualkgroup.com:58346/b1s/v1/Login";
-
-  //   try {
-  //     await fetch(url, {
-  //       method: "POST", // or 'PUT'
-  //       body: JSON.stringify(usuarioApi), // data can be `string` or {object}!
-  //       credentials: "same-origin",
-  //     })
-  //       .then((res) => res.json())
-  //       .catch((error) => console.error("Error:", error))
-  //       .then(function (response) {
-  //         //   console.log("resous", response);
-  //         // cookie_header.innerHTML = response.SessionId;
-  //         // console.log("dentro de fech post", cookie_header.textContent);
-  //       });
-
-  //     // let cookies = document.cookie;
-  //     console.log("los cookies", document.cookie);
-  //   } catch (error) {}
-  // }
-
-  // obtener los socios del usuario
-  const obtenerClientes = async () => {
     try {
-      const data = await axios(
-        // `https://datacenter.visualkgroup.com:58346/b1s/v1/BusinessPartners('CS001')`,
-        `https://datacenter.visualkgroup.com:58346/b1s/v1/BusinessPartners?$select=CardCode,CardName,CardType,FederalTaxID,AdditionalID&$filter=startswith(AdditionalID, 'postulante3')`,
-        {
-          withCredentials: true,
-        }
-      ).catch(function (error) {
-        // respuesta del servidor error
-        if (error.response) {
-          console.log(error.response.data);
-          // Arreglo de Log
-          setLogArr([
-            ...logArr,
-            logFuncion(
-              "",
-              "Error en Dashboard",
-              error.response.config.method,
-              error.response.status,
-              error.response.statusText,
-              error.response.data.error.message.value
-            ),
-          ]);
-        }
-      });
-
-      // setear la respuesta filtro
-      setClientes(data.data.value);
-
-      // Succes
-      // Arreglo de Log
-      setLogArr([
-        ...logArr,
-        logFuncion(
-          usuario,
-          "Succes Dashboard",
-          data.config.method,
-          data.status,
-          data.statusText,
-          "Succes"
-        ),
-      ]);
+      const toastId = toast.loading("cargando");
+      await axios
+        .post(`http://localhost:5000/visualk-creacion`, jsonSocio)
+        .catch((error) => console.error("Error:", error))
+        .then(function (response) {
+          console.log("respuesta", response.data);
+          if (response.data.error) {
+            // error
+            toast.update(toastId, {
+              render: `${
+                response.data.error.code === -10
+                  ? "Error Codigo Ocupado"
+                  : "Error"
+              }`,
+              type: "error",
+              isLoading: false,
+              autoClose: 5000,
+            });
+          } else {
+            // ok
+            toast.update(toastId, {
+              render: "Creado Correctamente",
+              type: "success",
+              isLoading: false,
+              autoClose: 5000,
+            });
+            // router.push("/prime");
+          }
+        });
     } catch (error) {
       console.log(error);
     }
@@ -271,61 +227,6 @@ const AuthProvider = ({ children }) => {
       ]);
 
       // setClientes(data.value);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  // creacion del socio
-  const creacionSocio = async (jsonsocio) => {
-    try {
-      const data = await axios
-        .post(
-          "https://datacenter.visualkgroup.com:58346/b1s/v1/BusinessPartners",
-          JSON.stringify(jsonsocio),
-          { withCredentials: true }
-        )
-        .catch(function (error) {
-          // respuesta del servidor error
-          if (error.response) {
-            console.log(error.response.data);
-            // Arreglo de Log
-            setLogArr([
-              ...logArr,
-              logFuncion(
-                "",
-                "Error Creacion Socio",
-                error.response.config.method,
-                error.response.status,
-                error.response.statusText,
-                error.response.data.error.message.value
-              ),
-            ]);
-          }
-        });
-
-      console.log("creacion hecha");
-
-      // Succes
-      // Arreglo de Log
-      setLogArr([
-        ...logArr,
-        logFuncion(
-          usuario,
-          "Succes Creacion",
-          data.config.method,
-          data.status,
-          data.statusText,
-          "Succes"
-        ),
-      ]);
-
-      console.log("creacion: ", data);
-
-      // obtenerClientes();
-
-      // repocicionar al usuario
-      // router.push("/prime");
     } catch (error) {
       console.log(error);
     }
@@ -427,6 +328,7 @@ const AuthProvider = ({ children }) => {
   return (
     <AuthContext.Provider
       value={{
+        auth,
         usuario,
         setUsuario,
         password,
@@ -448,15 +350,18 @@ const AuthProvider = ({ children }) => {
         verLog,
         setVerLog,
         handleEliminar,
+        handleMostrarDash,
         axiosLogin,
-        obtenerClientes,
-        creacionSocio,
+        axiosTusClientes,
+        axiosCrecion,
         obtenerBuscador,
         editarSocio,
         buscador,
         logArr,
         // obtenerLogServer,
-        obteneritem,
+        // obteneritem,
+        mostrarPanel,
+        setMostrarPanel,
       }}
     >
       {children}

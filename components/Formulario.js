@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import useAuth from "../hooks/useAuth";
 
-const Formulario = ({ creacionSocio }) => {
+const Formulario = ({ axiosCrecion }) => {
   const {
     cliente,
     setClientes,
@@ -90,7 +90,7 @@ const Formulario = ({ creacionSocio }) => {
     // setClientes([...clientes, socioNew]);
 
     console.log("obj nuevo", socioNew);
-    creacionSocio(socioNew);
+    axiosCrecion(socioNew);
 
     // setVerCrear(false);
   };

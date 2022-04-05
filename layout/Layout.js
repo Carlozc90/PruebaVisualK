@@ -17,6 +17,7 @@ const Layout = ({ children }) => {
     setVerCrear,
     setVerBuscardor,
     setVerLog,
+    setMostrarPanel,
   } = useAuth();
 
   // useEffect(() => {
@@ -53,6 +54,7 @@ const Layout = ({ children }) => {
                     setVerCrear(false);
                     setVerBuscardor(false);
                     setVerLog(false);
+                    setMostrarPanel(false);
                   }}
                   className="text-gray-200 hover:text-white block mt-2 text-2xl font-medium "
                 >
