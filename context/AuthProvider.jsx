@@ -3,6 +3,7 @@ import { createContext, useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { formatearFecha, logFuncion } from "../helpers";
 import { toast } from "react-toastify";
+import { getSqlAxios, newSqlAxios } from "../helpers/peticionSql";
 
 const AuthContext = createContext();
 
@@ -68,6 +69,8 @@ const AuthProvider = ({ children }) => {
             setAuth(true);
             router.push("/prime");
           }
+          // Agrega log en sql
+          newSqlAxios(response);
         });
     } catch (error) {
       console.log(error);
@@ -85,53 +88,13 @@ const AuthProvider = ({ children }) => {
           setClientes(response.data.value);
 
           if (response.data.error) toast.error("Error");
+          newSqlAxios(response);
         });
     } catch (error) {
       console.log(error);
 
       toast.error("Error");
     }
-
-    // try {
-    //   const data = await axios(`http://localhost:5000/visualk-login')`).catch(
-    //     function (error) {
-    //       if (error.response) {
-    //         console.log(error.response.data);
-    //         // Arreglo de Log
-    //         setLogArr([
-    //           ...logArr,
-    //           logFuncion(
-    //             "",
-    //             "Error en Dashboard",
-    //             error.response.config.method,
-    //             error.response.status,
-    //             error.response.statusText,
-    //             error.response.data.error.message.value
-    //           ),
-    //         ]);
-    //       }
-    //     }
-    //   );
-
-    //   // setear la respuesta filtro
-    //   setClientes(data.data.value);
-
-    //   // Succes
-    //   // Arreglo de Log
-    //   setLogArr([
-    //     ...logArr,
-    //     logFuncion(
-    //       usuario,
-    //       "Succes Dashboard",
-    //       data.config.method,
-    //       data.status,
-    //       data.statusText,
-    //       "Succes"
-    //     ),
-    //   ]);
-    // } catch (error) {
-    //   console.log(error);
-    // }
   };
 
   // creacion del socio
@@ -167,6 +130,8 @@ const AuthProvider = ({ children }) => {
             });
             // router.push("/prime");
           }
+
+          newSqlAxios(response);
         });
     } catch (error) {
       console.log(error);
@@ -183,6 +148,7 @@ const AuthProvider = ({ children }) => {
           setClientes(response.data.value);
 
           if (response.data.error) toast.error("Error");
+          newSqlAxios(response);
         });
     } catch (error) {
       console.log(error);
@@ -194,7 +160,6 @@ const AuthProvider = ({ children }) => {
 
   // Editar Socio
   const axiosEdicion = async (cardcode, objNew) => {
-    console.log("click Edicion");
     const toastId = toast.loading("cargando");
     try {
       await axios
@@ -220,6 +185,8 @@ const AuthProvider = ({ children }) => {
               autoClose: 5000,
             });
           }
+
+          newSqlAxios(response);
         });
     } catch (error) {
       console.log(error);
@@ -230,49 +197,6 @@ const AuthProvider = ({ children }) => {
         autoClose: 5000,
       });
     }
-
-    // try {
-    //   const data = await axios
-    //     .patch(
-    //       `https://datacenter.visualkgroup.com:58346/b1s/v1/BusinessPartners('${cardcode}')`,
-    //       JSON.stringify(jsonmodificado),
-    //       { withCredentials: true }
-    //     )
-    //     .catch(function (error) {
-    //       // respuesta del servidor error
-    //       if (error.response) {
-    //         console.log(error.response.data);
-    //         // Arreglo de Log
-    //         setLogArr([
-    //           ...logArr,
-    //           logFuncion(
-    //             "",
-    //             "Error Edicion Socio",
-    //             error.response.config.method,
-    //             error.response.status,
-    //             error.response.statusText,
-    //             error.response.data.error.message.value
-    //           ),
-    //         ]);
-    //       }
-    //     });
-    //   console.log("modificado");
-    //   setLogArr([
-    //     ...logArr,
-    //     logFuncion(
-    //       usuario,
-    //       "Succes Edicion",
-    //       data.config.method,
-    //       data.status,
-    //       data.statusText,
-    //       "Succes"
-    //     ),
-    //   ]);
-    //   // // repocicionar al usuario
-    //   // router.push("/prime");
-    // } catch (error) {
-    //   console.log(error);
-    // }
   };
 
   // eliminando socio Error
@@ -304,6 +228,8 @@ const AuthProvider = ({ children }) => {
               autoClose: 5000,
             });
           }
+
+          newSqlAxios(response);
         });
     } catch (error) {
       console.log(error);

@@ -34,7 +34,6 @@ const Formulario = ({ axiosCrecion }) => {
 
   // mode Edit
   useEffect(() => {
-    // console.log("elcliente", cliente);
     if (Object.keys(cliente).length > 0) {
       setNombre(cliente.CardName);
       setCodigo(cliente.CardCode);
@@ -73,21 +72,8 @@ const Formulario = ({ axiosCrecion }) => {
     if (verEditar) {
       console.log("modo editando", socioEdit);
       axiosEdicion(cliente.CardCode, socioEdit);
-
-      // editar el obj
-      // socioNew.id = cliente.id;
-      // const clienteActualizado = clientes.map((item) =>
-      //   item.id === cliente.id ? socioNew : item
-      // );
-
-      // setClientes(clienteActualizado);
-      // setVerEditar(false);
-
       return;
     }
-    // añadir copia del objeto
-    // socioNew.id = generarId();
-    // setClientes([...clientes, socioNew]);
 
     console.log("obj nuevo", socioNew);
     axiosCrecion(socioNew);
@@ -115,7 +101,6 @@ const Formulario = ({ axiosCrecion }) => {
       </div>
       {!verEditar && (
         <>
-          {" "}
           <div className="mb-4">
             <label
               htmlFor="codigo"
@@ -144,7 +129,7 @@ const Formulario = ({ axiosCrecion }) => {
               name="carta"
               className="border w-full p-3 mt-3 bg-gray-50"
               placeholder="Ej: C"
-              value={carta === "cCustomer" && "C"}
+              value={carta}
               onChange={(e) => setCarta(e.target.value)}
             />
           </div>

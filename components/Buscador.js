@@ -108,6 +108,7 @@ const Buscador = () => {
       </div>
 
       {atvResultado &&
+        clientes &&
         clientes.map((items, i) => <BuscardorMapeo key={i} items={items} />)}
     </>
   );
