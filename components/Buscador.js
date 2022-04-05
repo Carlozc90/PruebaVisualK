@@ -1,5 +1,6 @@
 import { Fragment, useEffect, useState } from "react";
 import useAuth from "../hooks/useAuth";
+import BuscardorMapeo from "./BuscardorMapeo";
 
 const PLANES = [
   {
@@ -11,12 +12,13 @@ const PLANES = [
   {
     id: 2,
     nombre: "Codigo",
-    place: "CardCode",
+    place: "Codigo del Socio",
+    parametro: "CardCode",
   },
 ];
 
 const Buscador = () => {
-  const { obtenerBuscador, buscador } = useAuth();
+  const { axiosBuscador, clientes } = useAuth();
 
   const [activador, setActivador] = useState(0);
   const [atvResultado, setAtvResultado] = useState(false);
@@ -40,7 +42,7 @@ const Buscador = () => {
 
     console.log("parametros", filtro.parametro);
     console.log("string", inputstate);
-    obtenerBuscador(filtro.parametro, inputstate);
+    axiosBuscador(filtro.parametro, inputstate);
     setAtvResultado(true);
   };
 
@@ -105,44 +107,8 @@ const Buscador = () => {
         </form>
       </div>
 
-      {atvResultado && (
-        <div className="bg-slate-100 mt-10 px-5 py-10 rounded-md shadow-md w-3/4 mx-auto">
-          <h1 className="text-gray-600 font-bold text-xl uppercase text-center">
-            Resultado
-          </h1>
-
-          <p className="text-4xl text-gray-800 mt-10 font-bold">
-            Socio:{" "}
-            <span className="text-gray-800 text-3xl uppercase font-semibold">
-              {buscador[0]?.CardName}
-            </span>
-          </p>
-          <p className="text-2xl text-gray-800 mt-2 font-bold">
-            CardCode:{" "}
-            <span className="text-gray-700  font-semibold">
-              {buscador[0]?.CardCode}
-            </span>
-          </p>
-          <p className="text-2xl text-gray-800 mt-2 font-bold">
-            CardType:{" "}
-            <span className="text-gray-700  font-semibold">
-              {buscador[0]?.CardType}
-            </span>
-          </p>
-          <p className="text-2xl text-gray-800 mt-2 font-bold">
-            Usuario:{" "}
-            <span className="text-gray-700  font-semibold">
-              {buscador[0]?.AdditionalID}
-            </span>
-          </p>
-          <p className="text-2xl text-gray-800 mt-2 font-bold">
-            TaxID:{" "}
-            <span className="text-gray-700  font-semibold">
-              {buscador[0]?.FederalTaxID}
-            </span>
-          </p>
-        </div>
-      )}
+      {atvResultado &&
+        clientes.map((items, i) => <BuscardorMapeo key={i} items={items} />)}
     </>
   );
 };

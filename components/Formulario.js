@@ -11,7 +11,7 @@ const Formulario = ({ axiosCrecion }) => {
     setVerEditar,
     setVerCrear,
     usuario,
-    editarSocio,
+    axiosEdicion,
   } = useAuth();
 
   const [nombre, setNombre] = useState("");
@@ -67,12 +67,12 @@ const Formulario = ({ axiosCrecion }) => {
 
     const socioEdit = {
       CardName: nombre,
+      FederalTaxID: taxId,
     };
 
     if (verEditar) {
       console.log("modo editando", socioEdit);
-
-      editarSocio(cliente.CardCode, socioEdit);
+      axiosEdicion(cliente.CardCode, socioEdit);
 
       // editar el obj
       // socioNew.id = cliente.id;
@@ -113,38 +113,44 @@ const Formulario = ({ axiosCrecion }) => {
           onChange={(e) => setNombre(e.target.value)}
         />
       </div>
-      <div className="mb-4">
-        <label
-          htmlFor="codigo"
-          className="uppercase text-gray-500 block text-xl font-bold"
-        >
-          Codigo:
-        </label>
-        <input
-          type="text"
-          name="codigo"
-          className="border w-full p-3 mt-3 bg-gray-50"
-          placeholder="Ej: CS001"
-          value={codigo}
-          onChange={(e) => setCodigo(e.target.value)}
-        />
-      </div>
-      <div className="mb-4">
-        <label
-          htmlFor="carta"
-          className="uppercase text-gray-500 block text-xl font-bold"
-        >
-          Tipo Carta:
-        </label>
-        <input
-          type="text"
-          name="carta"
-          className="border w-full p-3 mt-3 bg-gray-50"
-          placeholder="Ej: C"
-          value={carta}
-          onChange={(e) => setCarta(e.target.value)}
-        />
-      </div>
+      {!verEditar && (
+        <>
+          {" "}
+          <div className="mb-4">
+            <label
+              htmlFor="codigo"
+              className="uppercase text-gray-500 block text-xl font-bold"
+            >
+              Codigo:
+            </label>
+            <input
+              type="text"
+              name="codigo"
+              className="border w-full p-3 mt-3 bg-gray-50"
+              placeholder="Ej: CS001"
+              value={codigo}
+              onChange={(e) => setCodigo(e.target.value)}
+            />
+          </div>
+          <div className="mb-4">
+            <label
+              htmlFor="carta"
+              className="uppercase text-gray-500 block text-xl font-bold"
+            >
+              Tipo Carta:
+            </label>
+            <input
+              type="text"
+              name="carta"
+              className="border w-full p-3 mt-3 bg-gray-50"
+              placeholder="Ej: C"
+              value={carta === "cCustomer" && "C"}
+              onChange={(e) => setCarta(e.target.value)}
+            />
+          </div>
+        </>
+      )}
+
       <div className="mb-4">
         <label
           htmlFor="taxId"
@@ -171,7 +177,7 @@ const Formulario = ({ axiosCrecion }) => {
             : "cursor-not-allowed bg-indigo-300"
         } `}
       >
-        Editar Cliente
+        {verEditar ? "Editar Socio" : "Crear Socio"}
       </button>
     </form>
   );

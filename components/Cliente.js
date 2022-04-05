@@ -5,7 +5,7 @@ const Cliente = ({ cliente }) => {
   const router = useRouter();
   // console.log(cliente, "CLiente");
   const { AdditionalID, CardCode, CardName, CardType, FederalTaxID } = cliente;
-  const { setVerCliente, setCliente, setVerEditar, handleEliminar } = useAuth();
+  const { setVerCliente, setCliente, setVerEditar, axiosDelete } = useAuth();
 
   const handleVer = () => {
     setVerCliente(true);
@@ -52,7 +52,7 @@ const Cliente = ({ cliente }) => {
           type="button"
           className="bg-red-500 block w-full text-white p-2 uppercase font-bold text-xs mt-2"
           onClick={() => {
-            handleEliminar(cliente.CardCode);
+            axiosDelete(cliente.CardCode);
           }}
         >
           Eliminar

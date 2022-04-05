@@ -28,17 +28,8 @@ const AuthProvider = ({ children }) => {
   const [cookies, setCookies] = useState({});
   const [session, setSession] = useState("");
 
-  // parametros
-  const [buscador, setBuscado] = useState([]);
-
   // LogRegistros
   const [logArr, setLogArr] = useState([]);
-
-  const handleEliminar = (id) => {
-    // const clientesActualizado = clientes.filter((item) => item.id !== id);
-    // setClientes(clientesActualizado);
-    eliminarSocio(id);
-  };
 
   const handleMostrarDash = () => {
     console.log("click");
@@ -83,7 +74,7 @@ const AuthProvider = ({ children }) => {
     }
   };
 
-  // obtener los socios del usuario
+  // obtener los socios del usuario en el dash
   const axiosTusClientes = async (usuario) => {
     if (usuario === "") usuario = "postulante3"; // protejer la ruta
     try {
@@ -97,9 +88,8 @@ const AuthProvider = ({ children }) => {
         });
     } catch (error) {
       console.log(error);
-      if (response.data.error) {
-        toast.error("Error");
-      }
+
+      toast.error("Error");
     }
 
     // try {
@@ -184,144 +174,145 @@ const AuthProvider = ({ children }) => {
   };
 
   // obtener los sociobuscador
-  const obtenerBuscador = async (params, str) => {
+  const axiosBuscador = async (params, str) => {
     try {
-      const data = await axios(
-        `https://datacenter.visualkgroup.com:58346/b1s/v1/BusinessPartners?$select=CardCode,CardName,CardType,FederalTaxID,AdditionalID&$filter=startswith(${params}, '${str}')`,
-        {
-          withCredentials: true,
-        }
-      ).catch(function (error) {
-        // respuesta del servidor error
-        if (error.response) {
-          console.log(error.response.data);
-          // Arreglo de Log
-          setLogArr([
-            ...logArr,
-            logFuncion(
-              "",
-              "Error en Buscador",
-              error.response.config.method,
-              error.response.status,
-              error.response.statusText,
-              error.response.data.error.message.value
-            ),
-          ]);
-        }
-      });
+      await axios(`http://localhost:5000/visualk-buscador/${params},${str}`)
+        .catch((error) => console.error("Error:", error))
+        .then(function (response) {
+          console.log("respuesta", response.data);
+          setClientes(response.data.value);
 
-      console.log("Buscador", data.data.value);
-      setBuscado(data.data.value);
-      // Succes
-      // Arreglo de Log
-      setLogArr([
-        ...logArr,
-        logFuncion(
-          usuario,
-          "Succes Buscador",
-          data.config.method,
-          data.status,
-          data.statusText,
-          "Succes"
-        ),
-      ]);
-
-      // setClientes(data.value);
+          if (response.data.error) toast.error("Error");
+        });
     } catch (error) {
       console.log(error);
+      if (response.data.error) {
+        toast.error("Error");
+      }
     }
   };
 
-  // editar socio ERROR
-  const editarSocio = async (cardcode, jsonmodificado) => {
+  // Editar Socio
+  const axiosEdicion = async (cardcode, objNew) => {
+    console.log("click Edicion");
+    const toastId = toast.loading("cargando");
     try {
-      const data = await axios
-        .patch(
-          `https://datacenter.visualkgroup.com:58346/b1s/v1/BusinessPartners('${cardcode}')`,
-          JSON.stringify(jsonmodificado),
-          { withCredentials: true }
-        )
-        .catch(function (error) {
-          // respuesta del servidor error
-          if (error.response) {
-            console.log(error.response.data);
-            // Arreglo de Log
-            setLogArr([
-              ...logArr,
-              logFuncion(
-                "",
-                "Error Edicion Socio",
-                error.response.config.method,
-                error.response.status,
-                error.response.statusText,
-                error.response.data.error.message.value
-              ),
-            ]);
+      await axios
+        .patch(`http://localhost:5000/vissualk-edicion/${cardcode}`, objNew)
+        .catch((error) => console.error("Error:", error))
+        .then(function (response) {
+          console.log("respuesta", response.data);
+
+          if (response.data === 204) {
+            toast.update(toastId, {
+              render: "Editado Correctamente",
+              type: "success",
+              isLoading: false,
+              autoClose: 5000,
+            });
+
+            // router.push("/prime");
+          } else {
+            toast.update(toastId, {
+              render: "Error Coneccion",
+              type: "error",
+              isLoading: false,
+              autoClose: 5000,
+            });
           }
         });
-      console.log("modificado");
-      setLogArr([
-        ...logArr,
-        logFuncion(
-          usuario,
-          "Succes Edicion",
-          data.config.method,
-          data.status,
-          data.statusText,
-          "Succes"
-        ),
-      ]);
-      // // repocicionar al usuario
-      // router.push("/prime");
     } catch (error) {
       console.log(error);
+      toast.update(toastId, {
+        render: "Error Coneccion",
+        type: "error",
+        isLoading: false,
+        autoClose: 5000,
+      });
     }
+
+    // try {
+    //   const data = await axios
+    //     .patch(
+    //       `https://datacenter.visualkgroup.com:58346/b1s/v1/BusinessPartners('${cardcode}')`,
+    //       JSON.stringify(jsonmodificado),
+    //       { withCredentials: true }
+    //     )
+    //     .catch(function (error) {
+    //       // respuesta del servidor error
+    //       if (error.response) {
+    //         console.log(error.response.data);
+    //         // Arreglo de Log
+    //         setLogArr([
+    //           ...logArr,
+    //           logFuncion(
+    //             "",
+    //             "Error Edicion Socio",
+    //             error.response.config.method,
+    //             error.response.status,
+    //             error.response.statusText,
+    //             error.response.data.error.message.value
+    //           ),
+    //         ]);
+    //       }
+    //     });
+    //   console.log("modificado");
+    //   setLogArr([
+    //     ...logArr,
+    //     logFuncion(
+    //       usuario,
+    //       "Succes Edicion",
+    //       data.config.method,
+    //       data.status,
+    //       data.statusText,
+    //       "Succes"
+    //     ),
+    //   ]);
+    //   // // repocicionar al usuario
+    //   // router.push("/prime");
+    // } catch (error) {
+    //   console.log(error);
+    // }
   };
 
   // eliminando socio Error
-  const eliminarSocio = async (cardcode) => {
-    console.log("eliminando");
-
+  const axiosDelete = async (cardcode) => {
+    console.log("eliminando", cardcode);
+    const toastId = toast.loading("cargando");
     try {
-      axios
-        .delete(
-          `https://datacenter.visualkgroup.com:58346/b1s/v1/BusinessPartners('${cardcode}')`,
-          { withCredentials: true }
-        )
-        .catch(function (error) {
-          // respuesta del servidor error
-          if (error.response) {
-            console.log(error.response.data);
-            // Arreglo de Log
-            setLogArr([
-              ...logArr,
-              logFuncion(
-                "",
-                "Error Eliminar Socio",
-                error.response.config.method,
-                error.response.status,
-                error.response.statusText,
-                error.response.data.error.message.value
-              ),
-            ]);
+      await axios
+        .delete(`http://localhost:5000/visualk-Eliminar/${cardcode}`)
+        .catch((error) => console.error("Error:", error))
+        .then(function (response) {
+          if (response.data === 204) {
+            toast.update(toastId, {
+              render: "Eliminado Correctamente",
+              type: "success",
+              isLoading: false,
+              autoClose: 5000,
+            });
+
+            // llamar de nuevo a los clientes ventana abierta
+            axiosTusClientes(usuario);
+
+            // router.push("/prime");
+          } else {
+            toast.update(toastId, {
+              render: "Error Eliminacion",
+              type: "error",
+              isLoading: false,
+              autoClose: 5000,
+            });
           }
         });
-      console.log("modificado");
-      setLogArr([
-        ...logArr,
-        logFuncion(
-          usuario,
-          "Succes Eliminacion",
-          data.config.method,
-          data.status,
-          data.statusText,
-          "Succes"
-        ),
-      ]);
-      // // repocicionar al usuario
-      // router.push("/prime");
     } catch (error) {
       console.log(error);
+      toast.update(toastId, {
+        render: "Error Coneccion",
+        type: "error",
+        isLoading: false,
+        autoClose: 5000,
+      });
     }
   };
 
@@ -349,14 +340,14 @@ const AuthProvider = ({ children }) => {
         setVerBuscardor,
         verLog,
         setVerLog,
-        handleEliminar,
+        // handleEliminar,
         handleMostrarDash,
         axiosLogin,
         axiosTusClientes,
         axiosCrecion,
-        obtenerBuscador,
-        editarSocio,
-        buscador,
+        axiosBuscador,
+        axiosEdicion,
+        axiosDelete,
         logArr,
         // obtenerLogServer,
         // obteneritem,
