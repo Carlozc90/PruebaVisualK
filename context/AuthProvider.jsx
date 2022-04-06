@@ -48,7 +48,7 @@ const AuthProvider = ({ children }) => {
         .post(`http://localhost:5000/visualk-login`, user)
         .catch((error) => console.error("Error:", error))
         .then(function (response) {
-          // console.log("respuesta->", response);
+          console.log("respuesta login->", response);
           const code = response.data.statusCode;
           if (code >= 200 && code < 300) {
             // ok
@@ -86,10 +86,10 @@ const AuthProvider = ({ children }) => {
       await axios(`http://localhost:5000/visualk-dashboard/${usuario}`)
         .catch((error) => console.error("Error:", error))
         .then(function (response) {
-          console.log("respuesta", response.data);
-          setClientes(response.data.value);
+          console.log("respuesta usuario", response.data);
+          setClientes(response.data.body.value);
 
-          if (response.data.error) toast.error("Error");
+          if (response.data.body.error) toast.error("Error");
           newSqlAxios(response);
         });
     } catch (error) {
@@ -110,19 +110,8 @@ const AuthProvider = ({ children }) => {
         .catch((error) => console.error("Error:", error))
         .then(function (response) {
           console.log("respuesta", response.data);
-          if (response.data.error) {
-            // error
-            toast.update(toastId, {
-              render: `${
-                response.data.error.code === -10
-                  ? "Error Codigo Ocupado"
-                  : "Error"
-              }`,
-              type: "error",
-              isLoading: false,
-              autoClose: 5000,
-            });
-          } else {
+          const code = response.data.statusCode;
+          if (code >= 200 && code < 300) {
             // ok
             toast.update(toastId, {
               render: "Creado Correctamente",
@@ -131,9 +120,21 @@ const AuthProvider = ({ children }) => {
               autoClose: 5000,
             });
             // router.push("/prime");
+          } else {
+            console.log("erro _>", response.data);
+            // error
+            toast.update(toastId, {
+              render: `${
+                response.data.body.error.code === -10
+                  ? "Error Codigo Ocupado"
+                  : "Error"
+              }`,
+              type: "error",
+              isLoading: false,
+              autoClose: 5000,
+            });
           }
-
-          newSqlAxios(response);
+          newSqlAxios(response, "creacion");
         });
     } catch (error) {
       console.log(error);
@@ -143,13 +144,31 @@ const AuthProvider = ({ children }) => {
   // obtener los sociobuscador
   const axiosBuscador = async (params, str) => {
     try {
+      const toastId = toast.loading("cargando");
       await axios(`http://localhost:5000/visualk-buscador/${params},${str}`)
         .catch((error) => console.error("Error:", error))
         .then(function (response) {
-          console.log("respuesta", response.data);
-          setClientes(response.data.value);
+          console.log("respuesta buscador", response.data);
+          const code = response.data.statusCode;
 
-          if (response.data.error) toast.error("Error");
+          setClientes(response.data.body.value);
+          if (code >= 200 && code < 300) {
+            // ok
+            toast.update(toastId, {
+              render: "Busqueda Correcta",
+              type: "success",
+              isLoading: false,
+              autoClose: 5000,
+            });
+          } else {
+            // error
+            toast.update(toastId, {
+              render: "Acceso denegado",
+              type: "error",
+              isLoading: false,
+              autoClose: 5000,
+            });
+          }
           newSqlAxios(response);
         });
     } catch (error) {
@@ -165,30 +184,27 @@ const AuthProvider = ({ children }) => {
     const toastId = toast.loading("cargando");
     try {
       await axios
-        .patch(`http://localhost:5000/vissualk-edicion/${cardcode}`, objNew)
+        .patch(`http://localhost:5000/visualk-edicion/${cardcode}`, objNew)
         .catch((error) => console.error("Error:", error))
         .then(function (response) {
           console.log("respuesta", response.data);
-
-          if (response.data === 204) {
+          newSqlAxios(response, "edicion");
+          const code = response.data.statusCode;
+          if (code >= 200 && code < 300) {
             toast.update(toastId, {
               render: "Editado Correctamente",
               type: "success",
               isLoading: false,
               autoClose: 5000,
             });
-
-            // router.push("/prime");
-          } else {
-            toast.update(toastId, {
-              render: "Error Coneccion",
-              type: "error",
-              isLoading: false,
-              autoClose: 5000,
-            });
+            return;
           }
-
-          newSqlAxios(response);
+          toast.update(toastId, {
+            render: "Error Edicion",
+            type: "error",
+            isLoading: false,
+            autoClose: 5000,
+          });
         });
     } catch (error) {
       console.log(error);
@@ -210,17 +226,16 @@ const AuthProvider = ({ children }) => {
         .delete(`http://localhost:5000/visualk-Eliminar/${cardcode}`)
         .catch((error) => console.error("Error:", error))
         .then(function (response) {
-          if (response.data === 204) {
+          const code = response.data.statusCode;
+          if (code >= 200 && code < 300) {
             toast.update(toastId, {
               render: "Eliminado Correctamente",
               type: "success",
               isLoading: false,
               autoClose: 5000,
             });
-
             // llamar de nuevo a los clientes ventana abierta
             axiosTusClientes(usuario);
-
             // router.push("/prime");
           } else {
             toast.update(toastId, {

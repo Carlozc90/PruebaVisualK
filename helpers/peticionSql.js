@@ -12,15 +12,22 @@ export async function getSqlAxios() {
   }
 }
 
-export async function newSqlAxios(obj) {
-  // console.log("sql->", obj);
+export async function newSqlAxios(obj, condicion = "") {
+  console.log("sql->", obj);
 
   const body = {
     status: obj.data.statusCode,
     type: obj.data.request.method,
-    body: JSON.stringify(obj.data.body),
+    body:
+      condicion === "creacion"
+        ? "Creado Correctamente"
+        : condicion === "edicion"
+        ? obj.config.data
+        : JSON.stringify(obj.data.body),
     fecha: obj.data.headers.date,
   };
+
+  console.log("sqlbody_>", body);
 
   try {
     await axios

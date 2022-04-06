@@ -37,7 +37,7 @@ const LogPage = () => {
       </div>
 
       <p className="mt-3">Operaciones Realizadas</p>
-      <table className="w-full bg-slate-500 mt-5 table-auto shadow">
+      <table className="w-full bg-slate-200 mt-5 table-auto shadow">
         <thead className="bg-blue-800 text-white">
           <tr>
             <th className="p-2">Status</th>
