@@ -1,0 +1,114 @@
+[
+  {
+    "id": 23,
+    "status": 401,
+    "type": "POST",
+    "body": "{\"error\":{\"code\":100000027,\"message\":{\"lang\":\"en-us\",\"value\":\"Login failed\"}}}",
+    "fecha": "Wed, 06 Apr 2022 02:31:07 GMT"
+  },
+  {
+    "id": 25,
+    "status": 401,
+    "type": "POST",
+    "body": "{\"error\":{\"code\":100000027,\"message\":{\"lang\":\"en-us\",\"value\":\"Login failed\"}}}",
+    "fecha": "Wed, 06 Apr 2022 02:34:09 GMT"
+  },
+  {
+    "id": 26,
+    "status": 401,
+    "type": "POST",
+    "body": "{\"error\":{\"code\":100000027,\"message\":{\"lang\":\"en-us\",\"value\":\"Login failed\"}}}",
+    "fecha": "Wed, 06 Apr 2022 02:34:45 GMT"
+  },
+  {
+    "id": 29,
+    "status": 401,
+    "type": "POST",
+    "body": "{\"error\":{\"code\":100000027,\"message\":{\"lang\":\"en-us\",\"value\":\"Login failed\"}}}",
+    "fecha": "Wed, 06 Apr 2022 02:40:42 GMT"
+  },
+  {
+    "id": 30,
+    "status": 401,
+    "type": "GET",
+    "body": "{\"error\":{\"code\":301,\"message\":{\"lang\":\"en-us\",\"value\":\"Invalid session.\"}}}",
+    "fecha": "Wed, 06 Apr 2022 02:47:35 GMT"
+  },
+  {
+    "id": 33,
+    "status": 401,
+    "type": "GET",
+    "body": "{\"error\":{\"code\":301,\"message\":{\"lang\":\"en-us\",\"value\":\"Invalid session.\"}}}",
+    "fecha": "Wed, 06 Apr 2022 04:16:21 GMT"
+  },
+  {
+    "id": 37,
+    "status": 401,
+    "type": "GET",
+    "body": "{\"error\":{\"code\":301,\"message\":{\"lang\":\"en-us\",\"value\":\"Invalid session.\"}}}",
+    "fecha": "Wed, 06 Apr 2022 04:37:42 GMT"
+  },
+  {
+    "id": 47,
+    "status": 400,
+    "type": "POST",
+    "body": "{\"error\":{\"code\":-10,\"message\":{\"lang\":\"en-us\",\"value\":\"1320000140 - Business partner code 'CS001' already assigned to a business partner; enter a unique business partner code\"}}}",
+    "fecha": "Wed, 06 Apr 2022 05:43:41 GMT"
+  },
+  {
+    "id": 93,
+    "status": 400,
+    "type": "POST",
+    "body": "{\"error\":{\"code\":-10,\"message\":{\"lang\":\"en-us\",\"value\":\"1320000140 - Business partner code 'CC001' already assigned to a business partner; enter a unique business partner code\"}}}",
+    "fecha": "Wed, 06 Apr 2022 14:41:09 GMT"
+  },
+  {
+    "id": 94,
+    "status": 400,
+    "type": "POST",
+    "body": "{\"error\":{\"code\":-10,\"message\":{\"lang\":\"en-us\",\"value\":\"1320000140 - Business partner code 'CS001' already assigned to a business partner; enter a unique business partner code\"}}}",
+    "fecha": "Wed, 06 Apr 2022 14:42:23 GMT"
+  },
+  {
+    "id": 106,
+    "status": 401,
+    "type": "POST",
+    "body": "{\"error\":{\"code\":100000027,\"message\":{\"lang\":\"en-us\",\"value\":\"Login failed\"}}}",
+    "fecha": "Wed, 06 Apr 2022 15:08:13 GMT"
+  },
+  {
+    "id": 110,
+    "status": 401,
+    "type": "POST",
+    "body": "{\"error\":{\"code\":100000027,\"message\":{\"lang\":\"en-us\",\"value\":\"Login failed\"}}}",
+    "fecha": "Wed, 06 Apr 2022 15:21:40 GMT"
+  },
+  {
+    "id": 113,
+    "status": 401,
+    "type": "POST",
+    "body": "{\"error\":{\"code\":100000027,\"message\":{\"lang\":\"en-us\",\"value\":\"Login failed\"}}}",
+    "fecha": "Wed, 06 Apr 2022 15:22:18 GMT"
+  },
+  {
+    "id": 118,
+    "status": 400,
+    "type": "POST",
+    "body": "{\"error\":{\"code\":-10,\"message\":{\"lang\":\"en-us\",\"value\":\"1320000140 - Business partner code 'CS002' already assigned to a business partner; enter a unique business partner code\"}}}",
+    "fecha": "Wed, 06 Apr 2022 15:27:47 GMT"
+  },
+  {
+    "id": 151,
+    "status": 401,
+    "type": "GET",
+    "body": "{\"error\":{\"code\":301,\"message\":{\"lang\":\"en-us\",\"value\":\"Invalid session.\"}}}",
+    "fecha": "Wed, 06 Apr 2022 16:14:06 GMT"
+  },
+  {
+    "id": 184,
+    "status": 400,
+    "type": "POST",
+    "body": "Creado Correctamente",
+    "fecha": "Wed, 06 Apr 2022 17:42:24 GMT"
+  }
+]

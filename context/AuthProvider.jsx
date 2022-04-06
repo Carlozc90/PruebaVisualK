@@ -1,9 +1,8 @@
 import axios from "axios";
 import { createContext, useEffect, useState } from "react";
 import { useRouter } from "next/router";
-import { formatearFecha, logFuncion } from "../helpers";
 import { toast } from "react-toastify";
-import { getSqlAxios, newSqlAxios } from "../helpers/peticionSql";
+import { newSqlAxios } from "../helpers/peticionSql";
 
 const AuthContext = createContext();
 
@@ -20,6 +19,7 @@ const AuthProvider = ({ children }) => {
   const [verCrear, setVerCrear] = useState(false);
   const [verBuscador, setVerBuscardor] = useState(false);
   const [verLog, setVerLog] = useState(false);
+  const [verPdf, setVerPdf] = useState(false);
 
   const [clientes, setClientes] = useState([]);
   const [cliente, setCliente] = useState({});
@@ -36,6 +36,20 @@ const AuthProvider = ({ children }) => {
     console.log("click");
     setMostrarPanel(!mostrarPanel);
     axiosTusClientes(usuario);
+  };
+
+  // peticion Sql
+  const getSqlAxios = async () => {
+    try {
+      await axios(`http://localhost:5000/sql`)
+        .catch((error) => console.error("Error sql:", error))
+        .then(function (response) {
+          // console.log("respuesta sql", response.data);
+          setLogArr(response.data);
+        });
+    } catch (error) {
+      console.log("error sql->", error);
+    }
   };
 
   // peticion login
@@ -73,6 +87,8 @@ const AuthProvider = ({ children }) => {
 
           // Agrega log en sql
           newSqlAxios(response);
+          //Actualiza front sql
+          getSqlAxios();
         });
     } catch (error) {
       console.log(error);
@@ -91,6 +107,8 @@ const AuthProvider = ({ children }) => {
 
           if (response.data.body.error) toast.error("Error");
           newSqlAxios(response);
+          //Actualiza front sql
+          getSqlAxios();
         });
     } catch (error) {
       console.log(error);
@@ -135,6 +153,8 @@ const AuthProvider = ({ children }) => {
             });
           }
           newSqlAxios(response, "creacion");
+          //Actualiza front sql
+          getSqlAxios();
         });
     } catch (error) {
       console.log(error);
@@ -170,6 +190,8 @@ const AuthProvider = ({ children }) => {
             });
           }
           newSqlAxios(response);
+          //Actualiza front sql
+          getSqlAxios();
         });
     } catch (error) {
       console.log(error);
@@ -189,6 +211,8 @@ const AuthProvider = ({ children }) => {
         .then(function (response) {
           console.log("respuesta", response.data);
           newSqlAxios(response, "edicion");
+          //Actualiza front sql
+          getSqlAxios();
           const code = response.data.statusCode;
           if (code >= 200 && code < 300) {
             toast.update(toastId, {
@@ -247,6 +271,8 @@ const AuthProvider = ({ children }) => {
           }
 
           newSqlAxios(response);
+          //Actualiza front sql
+          getSqlAxios();
         });
     } catch (error) {
       console.log(error);
@@ -271,6 +297,10 @@ const AuthProvider = ({ children }) => {
         setUser,
         clientes,
         setClientes,
+        logArr,
+        setLogArr,
+
+        //Vistas States
         cliente,
         setCliente,
         verCliente,
@@ -283,20 +313,20 @@ const AuthProvider = ({ children }) => {
         setVerBuscardor,
         verLog,
         setVerLog,
-        // handleEliminar,
+        verPdf,
+        setVerPdf,
+        mostrarPanel,
+        setMostrarPanel,
+
+        //peticiones
         handleMostrarDash,
+        getSqlAxios,
         axiosLogin,
         axiosTusClientes,
         axiosCrecion,
         axiosBuscador,
         axiosEdicion,
         axiosDelete,
-        logArr,
-        setLogArr,
-        // obtenerLogServer,
-        // obteneritem,
-        mostrarPanel,
-        setMostrarPanel,
       }}
     >
       {children}

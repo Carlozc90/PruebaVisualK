@@ -1,3 +1,4 @@
+import { creaPdf } from "../helpers/creacionPdf";
 import { getTextError } from "../helpers/peticionArchivos";
 import useAuth from "../hooks/useAuth";
 import Log from "./Log";
@@ -7,6 +8,7 @@ const LogPage = () => {
 
   const handlePdf = () => {
     console.log("click pdf");
+    creaPdf(logArr);
   };
 
   const handleTxt = () => {
@@ -37,7 +39,7 @@ const LogPage = () => {
       </div>
 
       <p className="mt-3">Operaciones Realizadas</p>
-      <table className="w-full bg-slate-200 mt-5 table-auto shadow">
+      <table className="w-full mt-5 table-auto shadow">
         <thead className="bg-blue-800 text-white">
           <tr>
             <th className="p-2">Status</th>

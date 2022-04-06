@@ -4,10 +4,9 @@ import Head from "next/head";
 import Link from "next/link";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { getSqlAxios } from "../helpers/peticionSql";
 
 const Layout = ({ children }) => {
-  const { setLogArr } = useAuth();
+  const { getSqlAxios } = useAuth();
   const router = useRouter();
   const {
     user,
