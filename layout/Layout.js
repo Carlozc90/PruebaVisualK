@@ -1,5 +1,4 @@
 import { useRouter } from "next/router";
-import { useEffect } from "react";
 import useAuth from "../hooks/useAuth";
 import Head from "next/head";
 import Link from "next/link";
@@ -7,8 +6,8 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 const Layout = ({ children }) => {
+  const { setLogArr } = useAuth();
   const router = useRouter();
-
   const {
     user,
     setVerCliente,
@@ -20,14 +19,7 @@ const Layout = ({ children }) => {
     setMostrarPanel,
   } = useAuth();
 
-  // useEffect(() => {
-  //   if (Object.values(user).includes("")) {
-  //     //   router.push("/");
-  //     console.log("esta vacio paso");
-  //     return;
-  //   }
-  //   console.log("contiene algo");
-  // }, [router, user]);
+  const getSqlAxios = async () => {};
 
   return (
     <>
@@ -101,6 +93,7 @@ const Layout = ({ children }) => {
                     setVerCrear(false);
                     setVerBuscardor(false);
                     setVerLog(true);
+                    getSqlAxios();
                   }}
                   className="text-gray-200 hover:text-white block mt-2 text-2xl font-medium "
                 >

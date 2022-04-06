@@ -48,17 +48,9 @@ const AuthProvider = ({ children }) => {
         .post(`http://localhost:5000/visualk-login`, user)
         .catch((error) => console.error("Error:", error))
         .then(function (response) {
-          console.log("respuesta", response.data);
-          if (response.data.error) {
-            // error
-            toast.update(toastId, {
-              render: "Acceso denegado",
-              type: "error",
-              isLoading: false,
-              autoClose: 5000,
-            });
-            setAuth(false);
-          } else {
+          // console.log("respuesta->", response);
+          const code = response.data.statusCode;
+          if (code >= 200 && code < 300) {
             // ok
             toast.update(toastId, {
               render: "Bienvenido",
@@ -68,7 +60,17 @@ const AuthProvider = ({ children }) => {
             });
             setAuth(true);
             router.push("/prime");
+          } else {
+            // error
+            toast.update(toastId, {
+              render: "Acceso denegado",
+              type: "error",
+              isLoading: false,
+              autoClose: 5000,
+            });
+            setAuth(false);
           }
+
           // Agrega log en sql
           newSqlAxios(response);
         });
@@ -275,6 +277,7 @@ const AuthProvider = ({ children }) => {
         axiosEdicion,
         axiosDelete,
         logArr,
+        setLogArr,
         // obtenerLogServer,
         // obteneritem,
         mostrarPanel,
