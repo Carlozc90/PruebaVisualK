@@ -9,7 +9,7 @@ const AuthContext = createContext();
 const AuthProvider = ({ children }) => {
   const router = useRouter();
 
-  const [usuario, setUsuario] = useState("");
+  const [usuario, setUsuario] = useState("develop");
   const [password, setPassword] = useState("");
   const [user, setUser] = useState({});
   const [auth, setAuth] = useState(false);
@@ -26,8 +26,6 @@ const AuthProvider = ({ children }) => {
 
   // funcionalidad
   const [mostrarPanel, setMostrarPanel] = useState(false);
-  const [cookies, setCookies] = useState({});
-  const [session, setSession] = useState("");
 
   // LogRegistros
   const [logArr, setLogArr] = useState([]);
@@ -86,7 +84,7 @@ const AuthProvider = ({ children }) => {
           }
 
           // Agrega log en sql
-          newSqlAxios(response);
+          newSqlAxios(usuario, "axiosLogin()", response);
           //Actualiza front sql
           getSqlAxios();
         });
@@ -106,7 +104,7 @@ const AuthProvider = ({ children }) => {
           setClientes(response.data.body.value);
 
           if (response.data.body.error) toast.error("Error");
-          newSqlAxios(response);
+          newSqlAxios(usuario, "axiosTusClientes()", response);
           //Actualiza front sql
           getSqlAxios();
         });
@@ -152,7 +150,7 @@ const AuthProvider = ({ children }) => {
               autoClose: 5000,
             });
           }
-          newSqlAxios(response, "creacion");
+          newSqlAxios(usuario, "axiosCrecion()", response, "creacion");
           //Actualiza front sql
           getSqlAxios();
         });
@@ -189,7 +187,7 @@ const AuthProvider = ({ children }) => {
               autoClose: 5000,
             });
           }
-          newSqlAxios(response);
+          newSqlAxios(usuario, "axiosBuscador()", response);
           //Actualiza front sql
           getSqlAxios();
         });
@@ -209,8 +207,8 @@ const AuthProvider = ({ children }) => {
         .patch(`http://localhost:5000/visualk-edicion/${cardcode}`, objNew)
         .catch((error) => console.error("Error:", error))
         .then(function (response) {
-          console.log("respuesta", response.data);
-          newSqlAxios(response, "edicion");
+          // console.log("respuesta", response.data);
+          newSqlAxios(usuario, "axiosEdicion()", response, "edicion");
           //Actualiza front sql
           getSqlAxios();
           const code = response.data.statusCode;
@@ -270,7 +268,7 @@ const AuthProvider = ({ children }) => {
             });
           }
 
-          newSqlAxios(response);
+          newSqlAxios(usuario, "axiosDelete()", response);
           //Actualiza front sql
           getSqlAxios();
         });

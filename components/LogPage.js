@@ -45,7 +45,7 @@ const LogPage = () => {
             <th className="p-2">Status</th>
             <th className="p-2">Type</th>
             <th className="p-2">Fecha</th>
-            <th className="p-2">Body</th>
+            <th className="p-2">Usuario</th>
           </tr>
         </thead>
         <tbody>

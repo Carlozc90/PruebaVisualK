@@ -1,6 +1,6 @@
 import axios from "axios";
 
-export async function newSqlAxios(obj, condicion = "") {
+export async function newSqlAxios(user, fn, obj, condicion = "") {
   // console.log("sql->", obj);
 
   const body = {
@@ -13,6 +13,8 @@ export async function newSqlAxios(obj, condicion = "") {
         ? obj.config.data
         : JSON.stringify(obj.data.body),
     fecha: obj.data.headers.date,
+    usuario: user,
+    funcion: fn,
   };
 
   // console.log("sqlbody_>", body);

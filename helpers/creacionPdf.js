@@ -8,9 +8,9 @@ export function creaPdf(arr) {
         DB_id: arr[i].id.toString(),
         status: arr[i].status.toString(),
         Type: ` ${arr[i].type} `,
-        Fecha: arr[i].fecha,
-        Usuario: "NaN",
-        Funcion: "NaN",
+        FechaServidor: arr[i].fecha,
+        Usuario: arr[i].usuario,
+        Funcion: ` ${arr[i].funcion} `,
       };
       data.id = (i + 1).toString();
       result.push(Object.assign({}, data));
@@ -38,14 +38,14 @@ export function creaPdf(arr) {
     "DB_id",
     "status",
     "Type",
-    "Fecha",
+    "FechaServidor",
     "Usuario",
     "Funcion",
   ]);
 
   var doc = new jsPDF({ putOnlyUsedFonts: true, orientation: "landscape" });
 
-  doc.table(10, 25, datos(arr.length), headers, { autoSize: true });
+  doc.table(40, 40, datos(arr.length), headers, { autoSize: true });
 
   doc.save("LogPeticiones.pdf");
 }
