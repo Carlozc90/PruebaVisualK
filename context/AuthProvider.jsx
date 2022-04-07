@@ -96,6 +96,7 @@ const AuthProvider = ({ children }) => {
   // obtener los socios del usuario en el dash
   const axiosTusClientes = async (usuario) => {
     if (usuario === "") usuario = "postulante3"; // protejer la ruta
+    const toastId = toast.loading("cargando");
     try {
       await axios(`http://localhost:5000/visualk-dashboard/${usuario}`)
         .catch((error) => console.error("Error:", error))
@@ -104,6 +105,23 @@ const AuthProvider = ({ children }) => {
           setClientes(response.data.body.value);
 
           if (response.data.body.error) toast.error("Error");
+          const code = response.data.statusCode;
+          if (code >= 200 && code < 300) {
+            toast.update(toastId, {
+              render: "Conectado",
+              type: "success",
+              isLoading: false,
+              autoClose: 5000,
+            });
+          } else {
+            // error
+            toast.update(toastId, {
+              render: "Error conexion",
+              type: "error",
+              isLoading: false,
+              autoClose: 5000,
+            });
+          }
           newSqlAxios(usuario, "axiosTusClientes()", response);
           //Actualiza front sql
           getSqlAxios();
