@@ -20,17 +20,17 @@ const LogPage = () => {
     <>
       <div className="flex justify-between items-center">
         <h1 className="text-4xl text-blue-600 font-semibold">Registro LOG</h1>
-        <div>
+        <div className="flex flex-col md:flex-row">
           <button
             type="submit"
-            className={`bg-indigo-700 w-full py-3 px-4 rounded-xl text-white  font-bold my-5 md:w-auto hover:bg-indigo-900`}
+            className={`bg-indigo-700 py-3 px-4 rounded-xl text-white  font-bold md:my-5 md:w-auto hover:bg-indigo-900`}
             onClick={handleTxt}
           >
-            Descarga .txt
+            Errores .txt
           </button>
           <button
             type="submit"
-            className={`bg-indigo-700 w-full py-3 px-4 rounded-xl text-white font-bold my-5 md:ml-3 md:w-auto hover:bg-indigo-900`}
+            className={`bg-indigo-700 mt-2 py-3 px-4 rounded-xl text-white font-bold md:my-5 md:ml-3 md:w-auto hover:bg-indigo-900`}
             onClick={handlePdf}
           >
             Descarga .PDF
@@ -45,6 +45,7 @@ const LogPage = () => {
             <th className="p-2">Status</th>
             <th className="p-2">Type</th>
             <th className="p-2">Fecha</th>
+            <th className="p-2">Funcion</th>
             <th className="p-2">Usuario</th>
           </tr>
         </thead>

@@ -47,11 +47,11 @@ const Login = () => {
   }, [cookies]);
 
   return (
-    <main className=" bg-slate-300 h-screen mx-auto grid grid-cols-2 gap-12 px-[80px] pb-32 items-center">
-      <div className=" ">
+    <main className=" bg-slate-300 h-full md:h-screen mx-auto grid md:grid-cols-2 md:gap-12 md:px-[80px] pb-32 items-center">
+      <div className="mt-10 md:mt-0">
         <h1 className="text-orange-400 font-black text-6xl text-center">
           Inicia Sesion y Administra tus{" "}
-          <span className="text-black">Socios VisualK Group</span>
+          <span className="text-gray-900">Socios VisualK Group</span>
         </h1>
       </div>
       <div className="mt-20 shadow-lg px-5 py-10 bg-slate-50 rounded-xl">

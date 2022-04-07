@@ -93,7 +93,7 @@ const Formulario = ({ axiosCrecion }) => {
         <input
           type="text"
           name="nombre"
-          className="border w-full p-3 mt-3 bg-gray-50"
+          className="border w-full p-3 mt-2 bg-gray-50"
           placeholder="Nombre del Socio"
           value={nombre}
           onChange={(e) => setNombre(e.target.value)}
@@ -111,7 +111,7 @@ const Formulario = ({ axiosCrecion }) => {
             <input
               type="text"
               name="codigo"
-              className="border w-full p-3 mt-3 bg-gray-50"
+              className="border w-full p-3 mt-2 bg-gray-50"
               placeholder="Ej: CS001"
               value={codigo}
               onChange={(e) => setCodigo(e.target.value)}
@@ -127,7 +127,7 @@ const Formulario = ({ axiosCrecion }) => {
             <input
               type="text"
               name="carta"
-              className="border w-full p-3 mt-3 bg-gray-50"
+              className="border w-full p-3 mt-2 bg-gray-50"
               placeholder="Ej: C"
               value={carta}
               onChange={(e) => setCarta(e.target.value)}
@@ -147,7 +147,7 @@ const Formulario = ({ axiosCrecion }) => {
           type="text"
           name="taxId"
           placeholder="Ej: 1-3"
-          className="border w-full p-3 mt-3 bg-gray-50"
+          className="border w-full p-3 mt-2 bg-gray-50"
           value={taxId}
           onChange={(e) => setTaxId(e.target.value)}
         />
@@ -156,7 +156,7 @@ const Formulario = ({ axiosCrecion }) => {
       <button
         disabled={activadorcreacion ? false : true}
         type="submit"
-        className={`bg-indigo-700 w-full py-3 px-10 rounded-xl text-white uppercase font-bold my-5   md:w-auto ${
+        className={`bg-indigo-700 w-full py-3 px-10 rounded-xl text-white uppercase font-bold my-2   md:w-auto ${
           activadorcreacion
             ? "hover:bg-indigo-900"
             : "cursor-not-allowed bg-indigo-300"

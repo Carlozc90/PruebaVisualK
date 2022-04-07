@@ -9,7 +9,7 @@ const AuthContext = createContext();
 const AuthProvider = ({ children }) => {
   const router = useRouter();
 
-  const [usuario, setUsuario] = useState("develop");
+  const [usuario, setUsuario] = useState("");
   const [password, setPassword] = useState("");
   const [user, setUser] = useState({});
   const [auth, setAuth] = useState(false);
@@ -173,7 +173,7 @@ const AuthProvider = ({ children }) => {
           if (code >= 200 && code < 300) {
             // ok
             toast.update(toastId, {
-              render: "Busqueda Correcta",
+              render: "Conectado",
               type: "success",
               isLoading: false,
               autoClose: 5000,

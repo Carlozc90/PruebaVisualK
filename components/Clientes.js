@@ -8,11 +8,13 @@ const Clientes = () => {
 
   return (
     <>
-      <h1 className="text-4xl text-blue-600 font-semibold">Socios</h1>
-      <p className="mt-3">Administra tus Socios</p>
+      <h1 className="text-4xl text-blue-600 font-semibold text-center md:text-left ">
+        Socios
+      </h1>
+      <p className="mt-3 text-center md:text-left">Administra tus Socios</p>
 
       {mostrarPanel ? (
-        <table className="w-full bg-slate-500 mt-5 table-auto shadow">
+        <table className="w-full bg-slate-300  mt-5 table-auto shadow">
           <thead className="bg-blue-800 text-white">
             <tr>
               <th className="p-2">Usuario</th>
@@ -31,7 +33,7 @@ const Clientes = () => {
       ) : (
         <button
           type="submit"
-          value="Iniciar Sesion"
+          value="Mostrar socios"
           className="bg-indigo-700 w-full py-3 px-10 rounded-xl text-white uppercase font-bold my-5 hover:cursor-pointer hover:bg-indigo-800 md:w-auto"
           onClick={handleMostrarDash}
         >
